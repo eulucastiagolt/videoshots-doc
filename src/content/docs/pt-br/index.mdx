@@ -1,78 +1,28 @@
 ---
 title: VideoShorts
 description: Uma biblioteca JavaScript leve para incorporar vídeos do YouTube com suporte a lazy loading.
+template: splash
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid, LinkButton } from '@astrojs/starlight/components';
 
-VideoShorts é uma biblioteca JavaScript leve e poderosa para incorporar vídeos do YouTube em suas aplicações web, com suporte nativo a lazy loading e uma API completa para controle de reprodução.
+Uma biblioteca JavaScript leve e poderosa para incorporar vídeos do YouTube em suas aplicações web, com suporte nativo a lazy loading e uma API completa para controle de reprodução.
+
+<LinkButton href="/pt-br/doc" variant="primary">Documentação</LinkButton>
 
 ## Recursos
 
 <CardGrid stagger>
-  <Card title="Lazy Loading" icon="play">
-    Carrega vídeos sob demanda usando Intersection Observer API para melhor performance.
+  <Card title="Carregamento Sob Demanda" icon="play">
+    Carrega vídeos sob demanda usando a API Intersection Observer para melhor desempenho.
   </Card>
   <Card title="API Completa" icon="settings">
-    Controle total sobre reprodução, volume, mute e outros aspectos dos vídeos.
+    Controle total sobre reprodução, volume, mudo e outros aspectos do vídeo.
   </Card>
   <Card title="Responsivo" icon="device">
-    Suporte a proporções de aspecto customizáveis para Shorts (9/16) e vídeos normais (16/9).
+    Suporte para proporções personalizadas para Shorts (9/16) e vídeos regulares (16/9).
   </Card>
   <Card title="Zero Dependências" icon="package">
-    Biblioteca standalone sem dependências externas.
+    Biblioteca independente, sem dependências externas.
   </Card>
 </CardGrid>
-
-## Por que VideoShorts?
-
-- **Performance**: Lazy loading automático reduz o tempo de carregamento inicial da página
-- **Flexibilidade**: Suporte a múltiplos formatos de URL do YouTube (watch, shorts, embed, youtu.be)
-- **Controle Total**: API intuitiva para controlar todos os aspectos da reprodução
-- **Personalização**: CSS customizável e opções de configuração extensíveis
-- **Skeleton Loading**: Experiência de carregamento suave com skeleton animation
-
-## Início Rápido
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
-</head>
-<body>
-  <div id="videos" data-videoshort></div>
-
-  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
-  <script>
-    const videos = [
-      'https://www.youtube.com/shorts/ZDqo7XROuwM',
-      'https://www.youtube.com/watch?v=SGfb6y1j5x0'
-    ];
-
-    const player = new VideoShorts('#videos', videos);
-    player.init();
-  </script>
-</body>
-</html>
-```
-
-## Suporte a Shorts
-
-VideoShorts foi projetado com suporte nativo para YouTube Shorts, permitindo exibir vídeos no formato vertical (9/16) de forma elegante em suas aplicações.
-
-## Suporte de Navegadores
-
-- Chrome 51+
-- Firefox 55+
-- Safari 12.1+
-- Edge 15+
-
-Requer `IntersectionObserver` API (lazy loading).
-
-## Próximos Passos
-
-- [Instalação](/installation) - Como instalar o VideoShorts
-- [Início Rápido](/quick-start) - Guia completo de uso
-- [Opções](/options) - Todas as opções de configuração
-- [API](/api/methods) - Referência completa da API

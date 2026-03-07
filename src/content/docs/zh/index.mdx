@@ -1,78 +1,28 @@
 ---
 title: VideoShorts
-description: 一个轻量级的 JavaScript 库，用于嵌入 YouTube 视频，支持懒加载。
+description: 一个轻量级的 JavaScript 库，支持懒加载嵌入 YouTube 视频。
+template: splash
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid, LinkButton } from '@astrojs/starlight/components';
 
-VideoShorts 是一个轻量级且功能强大的 JavaScript 库，用于在您的网页应用中嵌入 YouTube 视频，原生支持懒加载并提供完整的播放控制 API。
+一个轻量级且强大的 JavaScript 库，用于在您的 Web 应用程序中嵌入 YouTube 视频，具有原生懒加载支持和完整的播放控制 API。
+
+<LinkButton href="/zh/doc" variant="primary">文档</LinkButton>
 
 ## 特性
 
 <CardGrid stagger>
   <Card title="懒加载" icon="play">
-    使用 Intersection Observer API 按需加载视频，提升性能表现。
+    使用 Intersection Observer API 按需加载视频，以获得更好的性能。
   </Card>
   <Card title="完整 API" icon="settings">
-    完全控制播放、音量、静音以及其他视频功能。
+    完全控制播放、音量、静音和其他视频方面。
   </Card>
   <Card title="响应式" icon="device">
-    支持 Shorts (9/16) 和常规视频 (16/9) 的自定义宽高比。
+    支持 Shorts (9/16) 和常规视频 (16/9) 的自定义纵横比。
   </Card>
   <Card title="零依赖" icon="package">
-    独立库，无任何外部依赖。
+    独立的库，没有外部依赖。
   </Card>
 </CardGrid>
-
-## 为什么选择 VideoShorts？
-
-- **高性能**：自动懒加载减少页面初始加载时间
-- **灵活性**：支持多种 YouTube URL 格式（watch、shorts、embed、youtu.be）
-- **完全控制**：直观的 API 控制播放的所有方面
-- **可定制**：可自定义 CSS 和可扩展的配置选项
-- **骨架屏加载**：流畅的骨架屏动画加载体验
-
-## 快速开始
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
-</head>
-<body>
-  <div id="videos" data-videoshort></div>
-
-  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
-  <script>
-    const videos = [
-      'https://www.youtube.com/shorts/ZDqo7XROuwM',
-      'https://www.youtube.com/watch?v=SGfb6y1j5x0'
-    ];
-
-    const player = new VideoShorts('#videos', videos);
-    player.init();
-  </script>
-</body>
-</html>
-```
-
-## Shorts 支持
-
-VideoShorts 专为 YouTube Shorts 原生支持而设计，让您可以在应用中优雅地展示竖屏格式视频 (9/16)。
-
-## 浏览器支持
-
-- Chrome 51+
-- Firefox 55+
-- Safari 12.1+
-- Edge 15+
-
-需要 `IntersectionObserver` API（用于懒加载）。
-
-## 下一步
-
-- [安装](/zh/installation) - 如何安装 VideoShorts
-- [快速开始](/zh/quick-start) - 完整使用指南
-- [配置选项](/zh/options) - 所有配置选项
-- [API](/zh/api/methods) - 完整 API 参考
