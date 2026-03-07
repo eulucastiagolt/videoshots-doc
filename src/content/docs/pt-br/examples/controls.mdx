@@ -1,0 +1,468 @@
+---
+title: Controles
+description: Exemplos de controles avançados.
+---
+
+## Controles Básicos
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VideoShorts - Controles</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    
+    .control-panel {
+      max-width: 800px;
+      margin: 0 auto 20px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .control-group {
+      margin-bottom: 15px;
+    }
+    
+    .control-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #333;
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    
+    button:hover {
+      background: #555;
+    }
+    
+    button:active {
+      transform: scale(0.95);
+    }
+    
+    button.primary {
+      background: #ff0000;
+    }
+    
+    button.primary:hover {
+      background: #cc0000;
+    }
+    
+    input[type="range"] {
+      width: 100%;
+    }
+    
+    .status {
+      padding: 10px;
+      background: #e8e8e8;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-family: monospace;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="control-panel">
+    <div class="control-group">
+      <label>Reprodução</label>
+      <div class="button-group">
+        <button onclick="videos.play()">▶ Play All</button>
+        <button onclick="videos.pause()">⏸ Pause All</button>
+        <button onclick="videos.stop()">⏹ Stop All</button>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <label>Reprodução por Índice</label>
+      <div class="button-group">
+        <button onclick="videos.play(0)">Play #1</button>
+        <button onclick="videos.play(1)">Play #2</button>
+        <button onclick="videos.pause(0)">Pause #1</button>
+        <button onclick="videos.pause(1)">Pause #2</button>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <label>Áudio</label>
+      <div class="button-group">
+        <button onclick="videos.mute()">🔇 Mute All</button>
+        <button onclick="videos.unMute()">🔊 Unmute All</button>
+        <button onclick="videos.toggleMute(0)">Toggle #1</button>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <label>Volume: <span id="volume-value">50</span>%</label>
+      <input type="range" min="0" max="100" value="50" 
+             onchange="setVolume(this.value)">
+    </div>
+    
+    <div class="control-group">
+      <label>Seek</label>
+      <div class="button-group">
+        <button onclick="videos.seekTo(0)">Início</button>
+        <button onclick="videos.seekTo(30)">30s</button>
+        <button onclick="videos.seekTo(60)">60s</button>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <label>Informações</label>
+      <button onclick="showInfo()">Mostrar Info</button>
+      <div id="status" class="status"></div>
+    </div>
+  </div>
+  
+  <div id="video-container" data-videoshort></div>
+
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
+  <script>
+    let videos;
+    
+    async function init() {
+      videos = new VideoShorts('#video-container', [
+        'https://www.youtube.com/watch?v=SGfb6y1j5x0',
+        'https://www.youtube.com/watch?v=L5sr0kgwjEQ'
+      ], {
+        lazy: true,
+        width: '480px',
+        aspectRatio: '16/9',
+        muted: false,
+        controls: 1,
+        onReady: (event, index) => {
+          console.log(`Vídeo ${index} pronto`);
+        }
+      });
+      
+      await videos.init();
+    }
+    
+    function setVolume(value) {
+      document.getElementById('volume-value').textContent = value;
+      videos.setVolume(parseInt(value));
+    }
+    
+    function showInfo() {
+      const status = document.getElementById('status');
+      const currentTime0 = videos.getCurrentTime(0);
+      const duration0 = videos.getDuration(0);
+      const isPlaying0 = videos.isPlaying(0);
+      const isMuted0 = videos.isMuted(0);
+      
+      status.innerHTML = `
+        Vídeo #1:
+        - Tempo: ${currentTime0?.toFixed(1)}s / ${duration0?.toFixed(1)}s
+        - Reproduzindo: ${isPlaying0}
+        - Mudo: ${isMuted0}
+        - Estado: ${videos.getPlayerState(0)}
+      `;
+    }
+    
+    init();
+  </script>
+</body>
+</html>
+```
+
+## Controles com Slider de Volume
+
+```js
+const videos = new VideoShorts('#container', videoUrls, options);
+await videos.init();
+
+// Slider de volume
+const volumeSlider = document.getElementById('volume-slider');
+const volumeValue = document.getElementById('volume-value');
+
+volumeSlider.addEventListener('input', (e) => {
+  const volume = parseInt(e.target.value);
+  videos.setVolume(volume);
+  volumeValue.textContent = volume;
+});
+
+// Botões de mute
+document.getElementById('mute-btn').addEventListener('click', () => {
+  videos.mute();
+});
+
+document.getElementById('unmute-btn').addEventListener('click', () => {
+  videos.unMute();
+});
+```
+
+## Controles com Progresso
+
+```html
+<div class="progress-controls">
+  <input type="range" id="progress" min="0" max="100" value="0">
+  <span id="time-display">0:00 / 0:00</span>
+</div>
+
+<script>
+const progress = document.getElementById('progress');
+const timeDisplay = document.getElementById('time-display');
+
+// Atualiza progresso a cada segundo
+setInterval(() => {
+  const currentTime = videos.getCurrentTime(0);
+  const duration = videos.getDuration(0);
+  
+  if (currentTime && duration) {
+    const percent = (currentTime / duration) * 100;
+    progress.value = percent;
+    
+    const currentFormatted = formatTime(currentTime);
+    const durationFormatted = formatTime(duration);
+    timeDisplay.textContent = `${currentFormatted} / ${durationFormatted}`;
+  }
+}, 1000);
+
+// Seek ao alterar slider
+progress.addEventListener('input', (e) => {
+  const duration = videos.getDuration(0);
+  const seekTime = (e.target.value / 100) * duration;
+  videos.seekTo(seekTime, 0);
+});
+
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+</script>
+```
+
+## Controles com Keyboard
+
+```js
+document.addEventListener('keydown', (e) => {
+  switch(e.key) {
+    case ' ':
+      e.preventDefault();
+      // Toggle play/pause do vídeo ativo
+      if (videos.isPlaying(0)) {
+        videos.pause(0);
+      } else {
+        videos.play(0);
+      }
+      break;
+    case 'm':
+      videos.toggleMute(0);
+      break;
+    case 'ArrowLeft':
+      const currentTime = videos.getCurrentTime(0) || 0;
+      videos.seekTo(Math.max(0, currentTime - 10), 0);
+      break;
+    case 'ArrowRight':
+      const current = videos.getCurrentTime(0) || 0;
+      videos.seekTo(current + 10, 0);
+      break;
+    case 'ArrowUp':
+      const vol = videos.getVolume(0) || 50;
+      videos.setVolume(Math.min(100, vol + 10), 0);
+      break;
+    case 'ArrowDown':
+      const volume = videos.getVolume(0) || 50;
+      videos.setVolume(Math.max(0, volume - 10), 0);
+      break;
+  }
+});
+```
+
+## Player Personalizado Completo
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VideoShorts - Player Personalizado</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
+  <style>
+    .custom-player {
+      position: relative;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    
+    .custom-controls {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.8));
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .custom-player:hover .custom-controls {
+      opacity: 1;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 2px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+    
+    .progress-bar:hover {
+      height: 6px;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: #ff0000;
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+    
+    .control-buttons {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      color: #fff;
+    }
+    
+    .control-buttons button {
+      background: transparent;
+      padding: 5px;
+      font-size: 18px;
+    }
+    
+    .time-display {
+      font-size: 12px;
+      font-family: monospace;
+    }
+    
+    .volume-control {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-left: auto;
+    }
+    
+    .volume-control input[type="range"] {
+      width: 80px;
+    }
+  </style>
+</head>
+<body>
+  <div class="custom-player">
+    <div id="video-container" data-videoshort></div>
+    <div class="custom-controls">
+      <div class="progress-bar" onclick="seekToPosition(event)">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <div class="control-buttons">
+        <button onclick="togglePlay()">▶</button>
+        <button onclick="videos.seekTo((videos.getCurrentTime(0) || 0) - 10, 0)">⏪</button>
+        <button onclick="videos.seekTo((videos.getCurrentTime(0) || 0) + 10, 0)">⏩</button>
+        <span class="time-display" id="time-display">0:00 / 0:00</span>
+        <div class="volume-control">
+          <button onclick="videos.toggleMute(0)">🔊</button>
+          <input type="range" min="0" max="100" value="100" 
+                 onchange="videos.setVolume(this.value, 0)">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
+  <script>
+    let videos;
+    let playBtn;
+    
+    async function init() {
+      videos = new VideoShorts('#video-container', [
+        'https://www.youtube.com/watch?v=SGfb6y1j5x0'
+      ], {
+        lazy: false,
+        width: '640px',
+        aspectRatio: '16/9',
+        controls: 0,
+        modestbranding: 1,
+        onStateChange: (event) => {
+          playBtn = document.querySelector('.control-buttons button:first-child');
+          if (event.data === YT.PlayerState.PLAYING) {
+            playBtn.textContent = '⏸';
+          } else {
+            playBtn.textContent = '▶';
+          }
+        }
+      });
+      
+      await videos.init();
+      
+      setInterval(updateProgress, 100);
+    }
+    
+    function togglePlay() {
+      if (videos.isPlaying(0)) {
+        videos.pause(0);
+      } else {
+        videos.play(0);
+      }
+    }
+    
+    function updateProgress() {
+      const current = videos.getCurrentTime(0) || 0;
+      const duration = videos.getDuration(0) || 1;
+      const percent = (current / duration) * 100;
+      
+      document.getElementById('progress-fill').style.width = percent + '%';
+      
+      const timeDisplay = document.getElementById('time-display');
+      timeDisplay.textContent = `${formatTime(current)} / ${formatTime(duration)}`;
+    }
+    
+    function seekToPosition(e) {
+      const rect = e.target.getBoundingClientRect();
+      const percent = (e.clientX - rect.left) / rect.width;
+      const duration = videos.getDuration(0) || 0;
+      videos.seekTo(percent * duration, 0);
+    }
+    
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    init();
+  </script>
+</body>
+</html>
+```

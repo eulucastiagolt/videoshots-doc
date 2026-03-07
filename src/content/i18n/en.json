@@ -1,0 +1,32 @@
+{
+  "search.label": "Search",
+  "search.shortcutHint": "Press / to search",
+  "search.resultTitle": "Search Results",
+  "search.allResults": "See all results",
+  "search.noResults": "No results found for",
+  "search.loading": "Loading...",
+  "search.placeholder": "Search documentation",
+  
+  "page.toc.title": "On this page",
+  "page.lastUpdated": "Last updated",
+  "page.previous": "Previous",
+  "page.next": "Next",
+  "page.editLink": "Edit this page",
+  "page.translateLink": "Translate this page",
+  
+  "sidebar.title": "Menu",
+  "sidebar.collapse": "Collapse",
+  "sidebar.expand": "Expand",
+  
+  "language.select": "Select language",
+  "language.pt-br": "Português (Brasil)",
+  "language.en": "English",
+  "language.zh": "中文",
+  
+  "skipToContent": "Skip to content",
+  "breadcrumbs.home": "Home",
+  
+  "404.title": "Page not found",
+  "404.description": "The page you're looking for doesn't exist or has been moved.",
+  "404.backHome": "Go back home"
+}

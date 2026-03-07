@@ -1,0 +1,468 @@
+---
+title: 控制
+description: 高级控制示例。
+---
+
+## 基本控制
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VideoShorts - 控制</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    
+    .control-panel {
+      max-width: 800px;
+      margin: 0 auto 20px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .control-group {
+      margin-bottom: 15px;
+    }
+    
+    .control-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #333;
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    
+    button:hover {
+      background: #555;
+    }
+    
+    button:active {
+      transform: scale(0.95);
+    }
+    
+    button.primary {
+      background: #ff0000;
+    }
+    
+    button.primary:hover {
+      background: #cc0000;
+    }
+    
+    input[type="range"] {
+      width: 100%;
+    }
+    
+    .status {
+      padding: 10px;
+      background: #e8e8e8;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-family: monospace;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="control-panel">
+    <div class="control-group">
+      <label>播放控制</label>
+      <div class="button-group">
+        <button onclick="videos.play()">▶ 全部播放</button>
+        <button onclick="videos.pause()">⏸ 全部暂停</button>
+        <button onclick="videos.stop()">⏹ 全部停止</button>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <label>按索引播放</label>
+      <div class="button-group">
+        <button onclick="videos.play(0)">播放 #1</button>
+        <button onclick="videos.play(1)">播放 #2</button>
+        <button onclick="videos.pause(0)">暂停 #1</button>
+        <button onclick="videos.pause(1)">暂停 #2</button>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <label>音频</label>
+      <div class="button-group">
+        <button onclick="videos.mute()">🔇 全部静音</button>
+        <button onclick="videos.unMute()">🔊 全部取消静音</button>
+        <button onclick="videos.toggleMute(0)">切换 #1</button>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <label>音量: <span id="volume-value">50</span>%</label>
+      <input type="range" min="0" max="100" value="50" 
+             onchange="setVolume(this.value)">
+    </div>
+    
+    <div class="control-group">
+      <label>跳转</label>
+      <div class="button-group">
+        <button onclick="videos.seekTo(0)">开始</button>
+        <button onclick="videos.seekTo(30)">30秒</button>
+        <button onclick="videos.seekTo(60)">60秒</button>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <label>信息</label>
+      <button onclick="showInfo()">显示信息</button>
+      <div id="status" class="status"></div>
+    </div>
+  </div>
+  
+  <div id="video-container" data-videoshort></div>
+
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
+  <script>
+    let videos;
+    
+    async function init() {
+      videos = new VideoShorts('#video-container', [
+        'https://www.youtube.com/watch?v=SGfb6y1j5x0',
+        'https://www.youtube.com/watch?v=L5sr0kgwjEQ'
+      ], {
+        lazy: true,
+        width: '480px',
+        aspectRatio: '16/9',
+        muted: false,
+        controls: 1,
+        onReady: (event, index) => {
+          console.log(`视频 ${index} 已就绪`);
+        }
+      });
+      
+      await videos.init();
+    }
+    
+    function setVolume(value) {
+      document.getElementById('volume-value').textContent = value;
+      videos.setVolume(parseInt(value));
+    }
+    
+    function showInfo() {
+      const status = document.getElementById('status');
+      const currentTime0 = videos.getCurrentTime(0);
+      const duration0 = videos.getDuration(0);
+      const isPlaying0 = videos.isPlaying(0);
+      const isMuted0 = videos.isMuted(0);
+      
+      status.innerHTML = `
+        视频 #1:
+        - 时间: ${currentTime0?.toFixed(1)}秒 / ${duration0?.toFixed(1)}秒
+        - 正在播放: ${isPlaying0}
+        - 已静音: ${isMuted0}
+        - 状态: ${videos.getPlayerState(0)}
+      `;
+    }
+    
+    init();
+  </script>
+</body>
+</html>
+```
+
+## 音量滑块控制
+
+```js
+const videos = new VideoShorts('#container', videoUrls, options);
+await videos.init();
+
+// 音量滑块
+const volumeSlider = document.getElementById('volume-slider');
+const volumeValue = document.getElementById('volume-value');
+
+volumeSlider.addEventListener('input', (e) => {
+  const volume = parseInt(e.target.value);
+  videos.setVolume(volume);
+  volumeValue.textContent = volume;
+});
+
+// 静音按钮
+document.getElementById('mute-btn').addEventListener('click', () => {
+  videos.mute();
+});
+
+document.getElementById('unmute-btn').addEventListener('click', () => {
+  videos.unMute();
+});
+```
+
+## 进度控制
+
+```html
+<div class="progress-controls">
+  <input type="range" id="progress" min="0" max="100" value="0">
+  <span id="time-display">0:00 / 0:00</span>
+</div>
+
+<script>
+const progress = document.getElementById('progress');
+const timeDisplay = document.getElementById('time-display');
+
+// 每秒更新进度
+setInterval(() => {
+  const currentTime = videos.getCurrentTime(0);
+  const duration = videos.getDuration(0);
+  
+  if (currentTime && duration) {
+    const percent = (currentTime / duration) * 100;
+    progress.value = percent;
+    
+    const currentFormatted = formatTime(currentTime);
+    const durationFormatted = formatTime(duration);
+    timeDisplay.textContent = `${currentFormatted} / ${durationFormatted}`;
+  }
+}, 1000);
+
+// 滑块变化时跳转
+progress.addEventListener('input', (e) => {
+  const duration = videos.getDuration(0);
+  const seekTime = (e.target.value / 100) * duration;
+  videos.seekTo(seekTime, 0);
+});
+
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+</script>
+```
+
+## 键盘控制
+
+```js
+document.addEventListener('keydown', (e) => {
+  switch(e.key) {
+    case ' ':
+      e.preventDefault();
+      // 切换当前视频的播放/暂停
+      if (videos.isPlaying(0)) {
+        videos.pause(0);
+      } else {
+        videos.play(0);
+      }
+      break;
+    case 'm':
+      videos.toggleMute(0);
+      break;
+    case 'ArrowLeft':
+      const currentTime = videos.getCurrentTime(0) || 0;
+      videos.seekTo(Math.max(0, currentTime - 10), 0);
+      break;
+    case 'ArrowRight':
+      const current = videos.getCurrentTime(0) || 0;
+      videos.seekTo(current + 10, 0);
+      break;
+    case 'ArrowUp':
+      const vol = videos.getVolume(0) || 50;
+      videos.setVolume(Math.min(100, vol + 10), 0);
+      break;
+    case 'ArrowDown':
+      const volume = videos.getVolume(0) || 50;
+      videos.setVolume(Math.max(0, volume - 10), 0);
+      break;
+  }
+});
+```
+
+## 自定义播放器
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VideoShorts - 自定义播放器</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
+  <style>
+    .custom-player {
+      position: relative;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    
+    .custom-controls {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.8));
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .custom-player:hover .custom-controls {
+      opacity: 1;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 2px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+    
+    .progress-bar:hover {
+      height: 6px;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: #ff0000;
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+    
+    .control-buttons {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      color: #fff;
+    }
+    
+    .control-buttons button {
+      background: transparent;
+      padding: 5px;
+      font-size: 18px;
+    }
+    
+    .time-display {
+      font-size: 12px;
+      font-family: monospace;
+    }
+    
+    .volume-control {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-left: auto;
+    }
+    
+    .volume-control input[type="range"] {
+      width: 80px;
+    }
+  </style>
+</head>
+<body>
+  <div class="custom-player">
+    <div id="video-container" data-videoshort></div>
+    <div class="custom-controls">
+      <div class="progress-bar" onclick="seekToPosition(event)">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <div class="control-buttons">
+        <button onclick="togglePlay()">▶</button>
+        <button onclick="videos.seekTo((videos.getCurrentTime(0) || 0) - 10, 0)">⏪</button>
+        <button onclick="videos.seekTo((videos.getCurrentTime(0) || 0) + 10, 0)">⏩</button>
+        <span class="time-display" id="time-display">0:00 / 0:00</span>
+        <div class="volume-control">
+          <button onclick="videos.toggleMute(0)">🔊</button>
+          <input type="range" min="0" max="100" value="100" 
+                 onchange="videos.setVolume(this.value, 0)">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
+  <script>
+    let videos;
+    let playBtn;
+    
+    async function init() {
+      videos = new VideoShorts('#video-container', [
+        'https://www.youtube.com/watch?v=SGfb6y1j5x0'
+      ], {
+        lazy: false,
+        width: '640px',
+        aspectRatio: '16/9',
+        controls: 0,
+        modestbranding: 1,
+        onStateChange: (event) => {
+          playBtn = document.querySelector('.control-buttons button:first-child');
+          if (event.data === YT.PlayerState.PLAYING) {
+            playBtn.textContent = '⏸';
+          } else {
+            playBtn.textContent = '▶';
+          }
+        }
+      });
+      
+      await videos.init();
+      
+      setInterval(updateProgress, 100);
+    }
+    
+    function togglePlay() {
+      if (videos.isPlaying(0)) {
+        videos.pause(0);
+      } else {
+        videos.play(0);
+      }
+    }
+    
+    function updateProgress() {
+      const current = videos.getCurrentTime(0) || 0;
+      const duration = videos.getDuration(0) || 1;
+      const percent = (current / duration) * 100;
+      
+      document.getElementById('progress-fill').style.width = percent + '%';
+      
+      const timeDisplay = document.getElementById('time-display');
+      timeDisplay.textContent = `${formatTime(current)} / ${formatTime(duration)}`;
+    }
+    
+    function seekToPosition(e) {
+      const rect = e.target.getBoundingClientRect();
+      const percent = (e.clientX - rect.left) / rect.width;
+      const duration = videos.getDuration(0) || 0;
+      videos.seekTo(percent * duration, 0);
+    }
+    
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    init();
+  </script>
+</body>
+</html>
+```

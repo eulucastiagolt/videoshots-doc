@@ -1,0 +1,338 @@
+---
+title: Methods
+description: Complete reference for all VideoShorts API methods.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Initialization
+
+### `init()`
+
+Initializes the VideoShorts instance and renders the videos.
+
+- **Returns:** `Promise<VideoShorts>`
+- **Example:**
+
+```js
+const videos = new VideoShorts('#container', videoUrls, options);
+await videos.init();
+```
+
+### `destroy()`
+
+Destroys the instance, removes all players, and cleans up the DOM.
+
+- **Returns:** `VideoShorts`
+- **Example:**
+
+```js
+videos.destroy();
+```
+
+## Video Control
+
+### `play(index?)`
+
+Starts playback of one or all videos.
+
+- **Parameters:**
+  - `index` (optional): Index of a specific video. If omitted, plays all.
+- **Returns:** `VideoShorts`
+
+<Tabs>
+  <TabItem label="Play All">
+    ```js
+    videos.play();
+    ```
+  </TabItem>
+  <TabItem label="Play Specific">
+    ```js
+    videos.play(0); // plays the first video
+    ```
+  </TabItem>
+</Tabs>
+
+### `pause(index?)`
+
+Pauses playback of one or all videos.
+
+- **Parameters:**
+  - `index` (optional): Index of a specific video. If omitted, pauses all.
+- **Returns:** `VideoShorts`
+
+<Tabs>
+  <TabItem label="Pause All">
+    ```js
+    videos.pause();
+    ```
+  </TabItem>
+  <TabItem label="Pause Specific">
+    ```js
+    videos.pause(2); // pauses the third video
+    ```
+  </TabItem>
+</Tabs>
+
+### `stop(index?)`
+
+Stops playback and restarts one or all videos.
+
+- **Parameters:**
+  - `index` (optional): Index of a specific video. If omitted, stops all.
+- **Returns:** `VideoShorts`
+
+```js
+videos.stop();
+videos.stop(0); // stops only the first video
+```
+
+### `seekTo(seconds, index?)`
+
+Seeks to a specific point in the video.
+
+- **Parameters:**
+  - `seconds`: Time in seconds
+  - `index` (optional): Index of a specific video
+- **Returns:** `VideoShorts`
+
+```js
+videos.seekTo(30); // all videos to 30 seconds
+videos.seekTo(60, 0); // first video to 60 seconds
+```
+
+## Audio Control
+
+### `mute(index?)`
+
+Mutes one or all videos.
+
+- **Parameters:**
+  - `index` (optional): Index of a specific video
+- **Returns:** `VideoShorts`
+
+```js
+videos.mute();
+videos.mute(1); // mutes only the second video
+```
+
+### `unMute(index?)`
+
+Unmutes one or all videos.
+
+- **Parameters:**
+  - `index` (optional): Index of a specific video
+- **Returns:** `VideoShorts`
+
+```js
+videos.unMute();
+videos.unMute(0); // unmutes the first video
+```
+
+### `toggleMute(index)`
+
+Toggles mute state of a specific video.
+
+- **Parameters:**
+  - `index`: Index of the video
+- **Returns:** `VideoShorts`
+
+```js
+videos.toggleMute(0);
+```
+
+### `setVolume(volume, index?)`
+
+Sets the volume of one or all videos.
+
+- **Parameters:**
+  - `volume`: Volume level (0-100)
+  - `index` (optional): Index of a specific video
+- **Returns:** `VideoShorts`
+
+```js
+videos.setVolume(50); // 50% for all
+videos.setVolume(75, 0); // 75% for the first
+```
+
+### `getVolume(index)`
+
+Returns the current volume of a specific video.
+
+- **Parameters:**
+  - `index`: Index of the video
+- **Returns:** `number | null`
+
+```js
+const volume = videos.getVolume(0);
+console.log(volume); // e.g., 50
+```
+
+## State
+
+### `isMuted(index)`
+
+Checks if a video is muted.
+
+- **Parameters:**
+  - `index`: Index of the video
+- **Returns:** `boolean | null`
+
+```js
+if (videos.isMuted(0)) {
+  videos.unMute(0);
+}
+```
+
+### `isPlaying(index)`
+
+Checks if a video is playing.
+
+- **Parameters:**
+  - `index`: Index of the video
+- **Returns:** `boolean | null`
+
+```js
+if (videos.isPlaying(0)) {
+  console.log('Video is playing');
+}
+```
+
+### `isLoaded(index)`
+
+Checks if a video has been loaded.
+
+- **Parameters:**
+  - `index`: Index of the video
+- **Returns:** `boolean`
+
+```js
+if (videos.isLoaded(0)) {
+  videos.play(0);
+}
+```
+
+### `getPlayerState(index)`
+
+Returns the current state of the YouTube player.
+
+- **Parameters:**
+  - `index`: Index of the video
+- **Returns:** `number | null`
+
+Possible states:
+- `-1` - Unstarted
+- `0` - Ended
+- `1` - Playing
+- `2` - Paused
+- `3` - Buffering
+- `5` - Video cued
+
+```js
+const state = videos.getPlayerState(0);
+if (state === YT.PlayerState.PLAYING) {
+  console.log('Playing');
+}
+```
+
+### `getCurrentTime(index)`
+
+Returns the current playback time in seconds.
+
+- **Parameters:**
+  - `index`: Index of the video
+- **Returns:** `number | null`
+
+```js
+const currentTime = videos.getCurrentTime(0);
+console.log(`Current time: ${currentTime}s`);
+```
+
+### `getDuration(index)`
+
+Returns the total duration of the video in seconds.
+
+- **Parameters:**
+  - `index`: Index of the video
+- **Returns:** `number | null`
+
+```js
+const duration = videos.getDuration(0);
+console.log(`Duration: ${duration}s`);
+```
+
+## Loading
+
+### `loadVideo(index)`
+
+Manually loads a specific video.
+
+- **Parameters:**
+  - `index`: Index of the video
+- **Returns:** `Promise<VideoShorts>`
+
+```js
+await videos.loadVideo(0);
+```
+
+## Dimensions
+
+### `setSize(options)`
+
+Updates video dimensions dynamically.
+
+- **Parameters:**
+  - `options`: Object with `width`, `height`, and/or `aspectRatio`
+- **Returns:** `VideoShorts`
+
+```js
+videos.setSize({
+  width: '100%',
+  aspectRatio: '16/9'
+});
+
+videos.setSize({
+  width: '320px',
+  height: '180px'
+});
+```
+
+## Getters
+
+### `getPlayer(index)`
+
+Returns the YouTube player instance for a specific video.
+
+- **Parameters:**
+  - `index`: Index of the video
+- **Returns:** `YT.Player | null`
+
+```js
+const player = videos.getPlayer(0);
+if (player) {
+  const quality = player.getPlaybackQuality();
+  console.log(quality);
+}
+```
+
+### `getPlayers()`
+
+Returns all active players.
+
+- **Returns:** `YT.Player[]`
+
+```js
+const players = videos.getPlayers();
+console.log(`${players.length} active players`);
+```
+
+### `version`
+
+Returns the library version.
+
+- **Type:** `string` (property)
+
+```js
+console.log(videos.version); // "1.0.0"
+console.log(VideoShorts.version); // "1.0.0" (static)
+```

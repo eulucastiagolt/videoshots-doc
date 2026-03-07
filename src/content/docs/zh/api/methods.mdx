@@ -1,0 +1,338 @@
+---
+title: 方法
+description: VideoShorts 所有 API 方法的完整参考。
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## 初始化
+
+### `init()`
+
+初始化 VideoShorts 实例并渲染视频。
+
+- **返回值：** `Promise<VideoShorts>`
+- **示例：**
+
+```js
+const videos = new VideoShorts('#container', videoUrls, options);
+await videos.init();
+```
+
+### `destroy()`
+
+销毁实例，移除所有播放器并清理 DOM。
+
+- **返回值：** `VideoShorts`
+- **示例：**
+
+```js
+videos.destroy();
+```
+
+## 视频控制
+
+### `play(index?)`
+
+开始播放一个或所有视频。
+
+- **参数：**
+  - `index`（可选）：指定视频的索引。如果省略，则播放所有视频。
+- **返回值：** `VideoShorts`
+
+<Tabs>
+  <TabItem label="播放全部">
+    ```js
+    videos.play();
+    ```
+  </TabItem>
+  <TabItem label="播放指定视频">
+    ```js
+    videos.play(0); // 播放第一个视频
+    ```
+  </TabItem>
+</Tabs>
+
+### `pause(index?)`
+
+暂停一个或所有视频。
+
+- **参数：**
+  - `index`（可选）：指定视频的索引。如果省略，则暂停所有视频。
+- **返回值：** `VideoShorts`
+
+<Tabs>
+  <TabItem label="暂停全部">
+    ```js
+    videos.pause();
+    ```
+  </TabItem>
+  <TabItem label="暂停指定视频">
+    ```js
+    videos.pause(2); // 暂停第三个视频
+    ```
+  </TabItem>
+</Tabs>
+
+### `stop(index?)`
+
+停止播放并重新开始一个或所有视频。
+
+- **参数：**
+  - `index`（可选）：指定视频的索引。如果省略，则停止所有视频。
+- **返回值：** `VideoShorts`
+
+```js
+videos.stop();
+videos.stop(0); // 仅停止第一个视频
+```
+
+### `seekTo(seconds, index?)`
+
+跳转到视频的指定位置。
+
+- **参数：**
+  - `seconds`：时间（秒）
+  - `index`（可选）：指定视频的索引
+- **返回值：** `VideoShorts`
+
+```js
+videos.seekTo(30); // 所有视频跳转到 30 秒
+videos.seekTo(60, 0); // 第一个视频跳转到 60 秒
+```
+
+## 音频控制
+
+### `mute(index?)`
+
+静音一个或所有视频。
+
+- **参数：**
+  - `index`（可选）：指定视频的索引
+- **返回值：** `VideoShorts`
+
+```js
+videos.mute();
+videos.mute(1); // 仅静音第二个视频
+```
+
+### `unMute(index?)`
+
+取消一个或所有视频的静音。
+
+- **参数：**
+  - `index`（可选）：指定视频的索引
+- **返回值：** `VideoShorts`
+
+```js
+videos.unMute();
+videos.unMute(0); // 取消第一个视频的静音
+```
+
+### `toggleMute(index)`
+
+切换指定视频的静音状态。
+
+- **参数：**
+  - `index`：视频的索引
+- **返回值：** `VideoShorts`
+
+```js
+videos.toggleMute(0);
+```
+
+### `setVolume(volume, index?)`
+
+设置一个或所有视频的音量。
+
+- **参数：**
+  - `volume`：音量级别（0-100）
+  - `index`（可选）：指定视频的索引
+- **返回值：** `VideoShorts`
+
+```js
+videos.setVolume(50); // 所有视频设置为 50%
+videos.setVolume(75, 0); // 第一个视频设置为 75%
+```
+
+### `getVolume(index)`
+
+返回指定视频的当前音量。
+
+- **参数：**
+  - `index`：视频的索引
+- **返回值：** `number | null`
+
+```js
+const volume = videos.getVolume(0);
+console.log(volume); // 例如：50
+```
+
+## 状态
+
+### `isMuted(index)`
+
+检查视频是否静音。
+
+- **参数：**
+  - `index`：视频的索引
+- **返回值：** `boolean | null`
+
+```js
+if (videos.isMuted(0)) {
+  videos.unMute(0);
+}
+```
+
+### `isPlaying(index)`
+
+检查视频是否正在播放。
+
+- **参数：**
+  - `index`：视频的索引
+- **返回值：** `boolean | null`
+
+```js
+if (videos.isPlaying(0)) {
+  console.log('视频正在播放');
+}
+```
+
+### `isLoaded(index)`
+
+检查视频是否已加载。
+
+- **参数：**
+  - `index`：视频的索引
+- **返回值：** `boolean`
+
+```js
+if (videos.isLoaded(0)) {
+  videos.play(0);
+}
+```
+
+### `getPlayerState(index)`
+
+返回 YouTube 播放器的当前状态。
+
+- **参数：**
+  - `index`：视频的索引
+- **返回值：** `number | null`
+
+可能的状态：
+- `-1` - 未开始
+- `0` - 已结束
+- `1` - 正在播放
+- `2` - 已暂停
+- `3` - 缓冲中
+- `5` - 视频已排队
+
+```js
+const state = videos.getPlayerState(0);
+if (state === YT.PlayerState.PLAYING) {
+  console.log('正在播放');
+}
+```
+
+### `getCurrentTime(index)`
+
+返回当前播放时间（秒）。
+
+- **参数：**
+  - `index`：视频的索引
+- **返回值：** `number | null`
+
+```js
+const currentTime = videos.getCurrentTime(0);
+console.log(`当前时间：${currentTime}秒`);
+```
+
+### `getDuration(index)`
+
+返回视频的总时长（秒）。
+
+- **参数：**
+  - `index`：视频的索引
+- **返回值：** `number | null`
+
+```js
+const duration = videos.getDuration(0);
+console.log(`时长：${duration}秒`);
+```
+
+## 加载
+
+### `loadVideo(index)`
+
+手动加载指定视频。
+
+- **参数：**
+  - `index`：视频的索引
+- **返回值：** `Promise<VideoShorts>`
+
+```js
+await videos.loadVideo(0);
+```
+
+## 尺寸
+
+### `setSize(options)`
+
+动态更新视频尺寸。
+
+- **参数：**
+  - `options`：包含 `width`、`height` 和/或 `aspectRatio` 的对象
+- **返回值：** `VideoShorts`
+
+```js
+videos.setSize({
+  width: '100%',
+  aspectRatio: '16/9'
+});
+
+videos.setSize({
+  width: '320px',
+  height: '180px'
+});
+```
+
+## 获取器
+
+### `getPlayer(index)`
+
+返回指定视频的 YouTube 播放器实例。
+
+- **参数：**
+  - `index`：视频的索引
+- **返回值：** `YT.Player | null`
+
+```js
+const player = videos.getPlayer(0);
+if (player) {
+  const quality = player.getPlaybackQuality();
+  console.log(quality);
+}
+```
+
+### `getPlayers()`
+
+返回所有活动的播放器。
+
+- **返回值：** `YT.Player[]`
+
+```js
+const players = videos.getPlayers();
+console.log(`${players.length} 个活动播放器`);
+```
+
+### `version`
+
+返回库版本。
+
+- **类型：** `string`（属性）
+
+```js
+console.log(videos.version); // "1.0.0"
+console.log(VideoShorts.version); // "1.0.0"（静态）
+```

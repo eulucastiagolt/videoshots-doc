@@ -1,0 +1,106 @@
+---
+title: Início Rápido
+description: Comece a usar o VideoShorts em poucos minutos.
+---
+
+## Uso Básico
+
+### 1. Adicione um container HTML
+
+```html
+<div id="video-container" data-videoshort></div>
+```
+
+O atributo `data-videoshort` é opcional mas recomendado para evitar conflitos de estilos CSS.
+
+### 2. Importe a biblioteca e o CSS
+
+```js
+import VideoShorts from 'videoshots';
+import 'videoshots/dist/videoshots.min.css';
+```
+
+Ou usando CDN:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/videoshots/dist/videoshots.min.css">
+<script src="https://cdn.jsdelivr.net/npm/videoshots/dist/videoshots.min.js"></script>
+```
+
+### 3. Crie uma instância
+
+```js
+const videos = new VideoShorts('#video-container', [
+  'https://www.youtube.com/shorts/ZDqo7XROuwM',
+  'https://www.youtube.com/watch?v=SGfb6y1j5x0',
+  'https://youtu.be/dQw4w9WgXcQ'
+]);
+
+await videos.init();
+```
+
+## Formatos de URL Suportados
+
+VideoShorts aceita diversos formatos de URL do YouTube:
+
+| Formato | Exemplo |
+|---------|---------|
+| YouTube Watch | `https://www.youtube.com/watch?v=VIDEO_ID` |
+| YouTube Shorts | `https://www.youtube.com/shorts/VIDEO_ID` |
+| YouTube Embed | `https://www.youtube.com/embed/VIDEO_ID` |
+| youtu.be | `https://youtu.be/VIDEO_ID` |
+
+## Exemplo Completo
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VideoShorts Example</title>
+  <link rel="stylesheet" href="videoshots.min.css">
+</head>
+<body>
+  <h2>Meus Shorts</h2>
+  <div id="video-container" data-videoshort></div>
+
+  <script src="videoshots.min.js"></script>
+  <script>
+    const videos = new VideoShorts('#video-container', [
+      'https://www.youtube.com/shorts/ZDqo7XROuwM',
+      'https://www.youtube.com/shorts/dQw4w9WgXcQ'
+    ], {
+      lazy: true,
+      width: '280px',
+      aspectRatio: '9/16',
+      muted: true,
+      loop: true
+    });
+
+    videos.init().then(() => {
+      console.log('Vídeos carregados!');
+    });
+  </script>
+</body>
+</html>
+```
+
+## Controlando os Vídeos
+
+```js
+const videos = new VideoShorts('#container', videoUrls);
+await videos.init();
+
+videos.play();
+videos.pause();
+videos.mute();
+videos.unMute();
+videos.setVolume(50);
+```
+
+## Próximos Passos
+
+- [Opções](/options) - Explore todas as opções de configuração
+- [API](/api/methods) - Conheça todos os métodos disponíveis
+- [Exemplos](/examples/basic) - Veja exemplos práticos

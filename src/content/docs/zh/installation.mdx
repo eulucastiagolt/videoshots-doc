@@ -1,0 +1,84 @@
+---
+title: 安装
+description: 如何在您的项目中安装 VideoShorts。
+---
+
+## 通过 NPM
+
+```bash
+npm install videoshots
+```
+
+## 通过 Yarn
+
+```bash
+yarn add videoshots
+```
+
+## 通过 PNPM
+
+```bash
+pnpm add videoshots
+```
+
+## CDN (jsDelivr)
+
+### JavaScript
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
+```
+
+### CSS
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
+```
+
+## CDN (unpkg)
+
+### JavaScript
+
+```html
+<script src="https://unpkg.com/videoshots/dist/videoshots.min.js"></script>
+```
+
+### CSS
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/videoshots/dist/videoshots.min.css">
+```
+
+## 手动下载
+
+您也可以直接从 GitHub 仓库下载文件：
+
+1. 访问 [github.com/eulucastiagolt/videoshorts](https://github.com/eulucastiagolt/videoshorts)
+2. 下载 `dist/videoshots.min.js` 和 `dist/videoshots.min.css` 文件
+3. 将它们添加到您的项目中
+
+```html
+<link rel="stylesheet" href="path/to/videoshots.min.css">
+<script src="path/to/videoshots.min.js"></script>
+```
+
+## 验证安装
+
+安装完成后，验证库是否可用：
+
+### ES Modules
+
+```js
+import VideoShorts from 'videoshots';
+import 'videoshots/dist/videoshots.min.css';
+
+console.log(VideoShorts.version);
+```
+
+### CDN / Script 标签
+
+```js
+console.log(VideoShorts.version);
+```
+
+如果一切正常，您将在控制台中看到 `'1.0.0'`。

@@ -1,0 +1,317 @@
+---
+title: 配置选项
+description: VideoShorts 中可用的所有配置选项。
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## 默认选项
+
+```js
+const DEFAULT_OPTIONS = {
+  containerClass: 'videoshort-container',
+  wrapperClass: 'videoshort-wrapper',
+  itemClass: 'videoshort-item',
+  skeletonClass: 'videoshort-skeleton',
+  lazy: true,
+  lazyThreshold: 0.1,
+  lazyRootMargin: '200px',
+  width: '360px',
+  height: null,
+  aspectRatio: '9/16',
+  autoplay: false,
+  muted: false,
+  loop: false,
+  controls: 1,
+  rel: 0,
+  modestbranding: 1
+};
+```
+
+## CSS 类名
+
+### `containerClass`
+
+- **类型:** `string`
+- **默认值:** `'videoshort-container'`
+- **描述:** 应用于主容器的 CSS 类名。
+
+```js
+new VideoShorts('#container', videos, {
+  containerClass: 'my-custom-container'
+});
+```
+
+### `wrapperClass`
+
+- **类型:** `string`
+- **默认值:** `'videoshort-wrapper'`
+- **描述:** 应用于视频包装器的 CSS 类名。
+
+```js
+new VideoShorts('#container', videos, {
+  wrapperClass: 'my-custom-wrapper'
+});
+```
+
+### `itemClass`
+
+- **类型:** `string`
+- **默认值:** `'videoshort-item'`
+- **描述:** 应用于每个视频项的 CSS 类名。
+
+```js
+new VideoShorts('#container', videos, {
+  itemClass: 'my-video-item'
+});
+```
+
+### `skeletonClass`
+
+- **类型:** `string`
+- **默认值:** `'videoshort-skeleton'`
+- **描述:** 应用于加载骨架屏的 CSS 类名。
+
+```js
+new VideoShorts('#container', videos, {
+  skeletonClass: 'my-skeleton'
+});
+```
+
+## 懒加载
+
+### `lazy`
+
+- **类型:** `boolean`
+- **默认值:** `true`
+- **描述:** 启用或禁用视频懒加载。
+
+<Tabs>
+  <TabItem label="启用">
+    ```js
+    new VideoShorts('#container', videos, {
+      lazy: true // 视频在进入视口时加载
+    });
+    ```
+  </TabItem>
+  <TabItem label="禁用">
+    ```js
+    new VideoShorts('#container', videos, {
+      lazy: false // 所有视频立即加载
+    });
+    ```
+  </TabItem>
+</Tabs>
+
+### `lazyThreshold`
+
+- **类型:** `number`
+- **默认值:** `0.1`
+- **描述:** Intersection Observer 阈值（0 到 1）。定义元素在加载前必须可见的比例。
+
+```js
+new VideoShorts('#container', videos, {
+  lazyThreshold: 0.5 // 元素 50% 可见时加载
+});
+```
+
+### `lazyRootMargin`
+
+- **类型:** `string`
+- **默认值:** `'200px'`
+- **描述:** Intersection Observer 根元素的边距。允许在视频进入视口之前开始加载。
+
+```js
+new VideoShorts('#container', videos, {
+  lazyRootMargin: '400px' // 在进入视口前 400px 开始加载
+});
+```
+
+## 尺寸
+
+### `width`
+
+- **类型:** `string | null`
+- **默认值:** `'360px'`
+- **描述:** 每个视频项的宽度。接受有效的 CSS 值。
+
+```js
+new VideoShorts('#container', videos, {
+  width: '280px' // 较小的 Shorts
+});
+```
+
+```js
+new VideoShorts('#container', videos, {
+  width: '100%' // 响应式
+});
+```
+
+### `height`
+
+- **类型:** `string | null`
+- **默认值:** `null`
+- **描述:** 每个项的固定高度。如果设置，`aspectRatio` 将被忽略。
+
+```js
+new VideoShorts('#container', videos, {
+  width: '400px',
+  height: '225px' // 固定高度
+});
+```
+
+### `aspectRatio`
+
+- **类型:** `string`
+- **默认值:** `'9/16'`
+- **描述:** 视频的宽高比。如果设置了 `height`，则此选项被忽略。
+
+<Tabs>
+  <TabItem label="Shorts (9/16)">
+    ```js
+    new VideoShorts('#container', videos, {
+      aspectRatio: '9/16' // 竖屏格式
+    });
+    ```
+  </TabItem>
+  <TabItem label="普通视频 (16/9)">
+    ```js
+    new VideoShorts('#container', videos, {
+      aspectRatio: '16/9' // 宽屏格式
+    });
+    ```
+  </TabItem>
+  <TabItem label="正方形 (1/1)">
+    ```js
+    new VideoShorts('#container', videos, {
+      aspectRatio: '1/1' // 正方形格式
+    });
+    ```
+  </TabItem>
+</Tabs>
+
+## 播放
+
+### `autoplay`
+
+- **类型:** `boolean`
+- **默认值:** `false`
+- **描述:** 视频加载后自动开始播放。
+
+```js
+new VideoShorts('#container', videos, {
+  autoplay: true
+});
+```
+
+### `muted`
+
+- **类型:** `boolean`
+- **默认值:** `false`
+- **描述:** 静音播放视频。
+
+```js
+new VideoShorts('#container', videos, {
+  muted: true,
+  autoplay: true // 自动播放通常需要静音
+});
+```
+
+### `loop`
+
+- **类型:** `boolean`
+- **默认值:** `false`
+- **描述:** 视频结束后自动重新开始播放。
+
+```js
+new VideoShorts('#container', videos, {
+  loop: true
+});
+```
+
+## YouTube 播放器
+
+### `controls`
+
+- **类型:** `number`
+- **默认值:** `1`
+- **描述:** 显示 YouTube 播放器控件。
+  - `0` - 隐藏控件
+  - `1` - 显示控件
+
+```js
+new VideoShorts('#container', videos, {
+  controls: 0 // 不显示控件
+});
+```
+
+### `rel`
+
+- **类型:** `number`
+- **默认值:** `0`
+- **描述:** 控制结束时相关视频的显示。
+  - `0` - 显示来自同一频道的相关视频
+  - `1` - 显示来自任意频道的相关视频
+
+```js
+new VideoShorts('#container', videos, {
+  rel: 0 // 仅显示同一频道的视频
+});
+```
+
+### `modestbranding`
+
+- **类型:** `number`
+- **默认值:** `1`
+- **描述:** 移除播放器中的 YouTube 品牌标识。
+  - `0` - 显示完整品牌标识
+  - `1` - 减少品牌标识
+
+```js
+new VideoShorts('#container', videos, {
+  modestbranding: 1 // 最小化品牌标识
+});
+```
+
+## 回调函数
+
+### `onReady`
+
+- **类型:** `function`
+- **描述:** 播放器准备就绪时调用。
+
+```js
+new VideoShorts('#container', videos, {
+  onReady: (event, index, instance) => {
+    console.log(`视频 ${index} 已就绪！`);
+  }
+});
+```
+
+### `onStateChange`
+
+- **类型:** `function`
+- **描述:** 播放器状态改变时调用（播放、暂停、结束等）。
+
+```js
+new VideoShorts('#container', videos, {
+  onStateChange: (event, index, instance) => {
+    if (event.data === YT.PlayerState.PLAYING) {
+      console.log(`视频 ${index} 正在播放`);
+    }
+  }
+});
+```
+
+### `onError`
+
+- **类型:** `function`
+- **描述:** 播放器发生错误时调用。
+
+```js
+new VideoShorts('#container', videos, {
+  onError: (event, index, instance) => {
+    console.error(`视频 ${index} 发生错误:`, event.data);
+  }
+});
+```

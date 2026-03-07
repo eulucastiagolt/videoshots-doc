@@ -1,0 +1,254 @@
+---
+title: Básico
+description: Exemplo básico de uso do VideoShorts.
+---
+
+## HTML Completo
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VideoShorts - Exemplo Básico</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Meus Vídeos</h1>
+  <div id="video-container" data-videoshort></div>
+
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
+  <script>
+    const videos = new VideoShorts('#video-container', [
+      'https://www.youtube.com/watch?v=SGfb6y1j5x0',
+      'https://www.youtube.com/watch?v=L5sr0kgwjEQ',
+      'https://www.youtube.com/watch?v=1swTK9FaCvY'
+    ], {
+      lazy: true,
+      width: '480px',
+      aspectRatio: '16/9',
+      controls: 1
+    });
+
+    videos.init();
+  </script>
+</body>
+</html>
+```
+
+## Com ES Modules
+
+```js
+import VideoShorts from 'videoshots';
+import 'videoshots/dist/videoshots.min.css';
+
+const videos = new VideoShorts('#container', [
+  'https://www.youtube.com/watch?v=SGfb6y1j5x0',
+  'https://www.youtube.com/watch?v=L5sr0kgwjEQ'
+]);
+
+await videos.init();
+```
+
+## Com React
+
+```jsx
+import { useEffect, useRef } from 'react';
+import VideoShorts from 'videoshots';
+import 'videoshots/dist/videoshots.min.css';
+
+function VideoGallery({ videoUrls }) {
+  const containerRef = useRef(null);
+  const instanceRef = useRef(null);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      instanceRef.current = new VideoShorts(containerRef.current, videoUrls, {
+        lazy: true,
+        width: '100%',
+        aspectRatio: '16/9'
+      });
+      
+      instanceRef.current.init();
+    }
+
+    return () => {
+      instanceRef.current?.destroy();
+    };
+  }, [videoUrls]);
+
+  return (
+    <div 
+      ref={containerRef} 
+      data-videoshort 
+      style={{ maxWidth: '800px', margin: '0 auto' }}
+    />
+  );
+}
+
+export default VideoGallery;
+```
+
+## Com Vue 3
+
+```vue
+<template>
+  <div 
+    ref="container" 
+    data-videoshort
+    style="max-width: 800px; margin: 0 auto;"
+  />
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted, watch } from 'vue';
+import VideoShorts from 'videoshots';
+import 'videoshots/dist/videoshots.min.css';
+
+const props = defineProps({
+  videos: {
+    type: Array,
+    required: true
+  }
+});
+
+const container = ref(null);
+let instance = null;
+
+onMounted(async () => {
+  instance = new VideoShorts(container.value, props.videos, {
+    lazy: true,
+    width: '100%',
+    aspectRatio: '16/9'
+  });
+  
+  await instance.init();
+});
+
+onUnmounted(() => {
+  instance?.destroy();
+});
+
+watch(() => props.videos, async (newVideos) => {
+  instance?.destroy();
+  instance = new VideoShorts(container.value, newVideos, {
+    lazy: true,
+    width: '100%',
+    aspectRatio: '16/9'
+  });
+  await instance.init();
+});
+</script>
+```
+
+## Com Next.js
+
+```jsx
+'use client';
+
+import { useEffect, useRef } from 'react';
+import dynamic from 'next/dynamic';
+
+function VideoPlayer({ videos }) {
+  const containerRef = useRef(null);
+  const instanceRef = useRef(null);
+
+  useEffect(() => {
+    let VideoShorts;
+
+    import('videoshots').then((module) => {
+      VideoShorts = module.default;
+      
+      instanceRef.current = new VideoShorts(containerRef.current, videos, {
+        lazy: true,
+        width: '100%',
+        aspectRatio: '16/9'
+      });
+      
+      instanceRef.current.init();
+    });
+
+    return () => {
+      instanceRef.current?.destroy();
+    };
+  }, [videos]);
+
+  return <div ref={containerRef} data-videoshort />;
+}
+
+export default dynamic(() => Promise.resolve(VideoPlayer), { ssr: false });
+```
+
+## Grid Responsivo
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VideoShorts - Grid Responsivo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
+  <style>
+    #video-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .videoshort-wrapper {
+      gap: 20px;
+    }
+    
+    .videoshort-item {
+      width: calc(33.333% - 14px) !important;
+      min-width: 280px !important;
+      flex: 1;
+    }
+    
+    @media (max-width: 768px) {
+      .videoshort-item {
+        width: calc(50% - 10px) !important;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .videoshort-item {
+        width: 100% !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="video-container" data-videoshort></div>
+
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
+  <script>
+    const videos = new VideoShorts('#video-container', [
+      'https://www.youtube.com/watch?v=SGfb6y1j5x0',
+      'https://www.youtube.com/watch?v=L5sr0kgwjEQ',
+      'https://www.youtube.com/watch?v=1swTK9FaCvY',
+      'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+    ], {
+      lazy: true,
+      aspectRatio: '16/9'
+    });
+
+    videos.init();
+  </script>
+</body>
+</html>
+```

@@ -1,0 +1,317 @@
+---
+title: Options
+description: All configuration options available in VideoShorts.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Default Options
+
+```js
+const DEFAULT_OPTIONS = {
+  containerClass: 'videoshort-container',
+  wrapperClass: 'videoshort-wrapper',
+  itemClass: 'videoshort-item',
+  skeletonClass: 'videoshort-skeleton',
+  lazy: true,
+  lazyThreshold: 0.1,
+  lazyRootMargin: '200px',
+  width: '360px',
+  height: null,
+  aspectRatio: '9/16',
+  autoplay: false,
+  muted: false,
+  loop: false,
+  controls: 1,
+  rel: 0,
+  modestbranding: 1
+};
+```
+
+## CSS Classes
+
+### `containerClass`
+
+- **Type:** `string`
+- **Default:** `'videoshort-container'`
+- **Description:** CSS class applied to the main container.
+
+```js
+new VideoShorts('#container', videos, {
+  containerClass: 'my-custom-container'
+});
+```
+
+### `wrapperClass`
+
+- **Type:** `string`
+- **Default:** `'videoshort-wrapper'`
+- **Description:** CSS class applied to the video wrapper.
+
+```js
+new VideoShorts('#container', videos, {
+  wrapperClass: 'my-custom-wrapper'
+});
+```
+
+### `itemClass`
+
+- **Type:** `string`
+- **Default:** `'videoshort-item'`
+- **Description:** CSS class applied to each video item.
+
+```js
+new VideoShorts('#container', videos, {
+  itemClass: 'my-video-item'
+});
+```
+
+### `skeletonClass`
+
+- **Type:** `string`
+- **Default:** `'videoshort-skeleton'`
+- **Description:** CSS class applied to the loading skeleton.
+
+```js
+new VideoShorts('#container', videos, {
+  skeletonClass: 'my-skeleton'
+});
+```
+
+## Lazy Loading
+
+### `lazy`
+
+- **Type:** `boolean`
+- **Default:** `true`
+- **Description:** Enables or disables lazy loading of videos.
+
+<Tabs>
+  <TabItem label="Enabled">
+    ```js
+    new VideoShorts('#container', videos, {
+      lazy: true // videos load when they enter the viewport
+    });
+    ```
+  </TabItem>
+  <TabItem label="Disabled">
+    ```js
+    new VideoShorts('#container', videos, {
+      lazy: false // all videos load immediately
+    });
+    ```
+  </TabItem>
+</Tabs>
+
+### `lazyThreshold`
+
+- **Type:** `number`
+- **Default:** `0.1`
+- **Description:** Intersection Observer threshold (0 to 1). Defines how much of the element must be visible before loading.
+
+```js
+new VideoShorts('#container', videos, {
+  lazyThreshold: 0.5 // loads when 50% of element is visible
+});
+```
+
+### `lazyRootMargin`
+
+- **Type:** `string`
+- **Default:** `'200px'`
+- **Description:** Margin around the Intersection Observer root. Allows loading videos before they enter the viewport.
+
+```js
+new VideoShorts('#container', videos, {
+  lazyRootMargin: '400px' // loads 400px before entering viewport
+});
+```
+
+## Dimensions
+
+### `width`
+
+- **Type:** `string | null`
+- **Default:** `'360px'`
+- **Description:** Width of each video item. Accepts valid CSS values.
+
+```js
+new VideoShorts('#container', videos, {
+  width: '280px' // for smaller Shorts
+});
+```
+
+```js
+new VideoShorts('#container', videos, {
+  width: '100%' // responsive
+});
+```
+
+### `height`
+
+- **Type:** `string | null`
+- **Default:** `null`
+- **Description:** Fixed height of each item. If set, `aspectRatio` is ignored.
+
+```js
+new VideoShorts('#container', videos, {
+  width: '400px',
+  height: '225px' // fixed height
+});
+```
+
+### `aspectRatio`
+
+- **Type:** `string`
+- **Default:** `'9/16'`
+- **Description:** Aspect ratio of the videos. Ignored if `height` is set.
+
+<Tabs>
+  <TabItem label="Shorts (9/16)">
+    ```js
+    new VideoShorts('#container', videos, {
+      aspectRatio: '9/16' // vertical format
+    });
+    ```
+  </TabItem>
+  <TabItem label="Normal Videos (16/9)">
+    ```js
+    new VideoShorts('#container', videos, {
+      aspectRatio: '16/9' // widescreen format
+    });
+    ```
+  </TabItem>
+  <TabItem label="Square (1/1)">
+    ```js
+    new VideoShorts('#container', videos, {
+      aspectRatio: '1/1' // square format
+    });
+    ```
+  </TabItem>
+</Tabs>
+
+## Playback
+
+### `autoplay`
+
+- **Type:** `boolean`
+- **Default:** `false`
+- **Description:** Starts playback automatically when the video loads.
+
+```js
+new VideoShorts('#container', videos, {
+  autoplay: true
+});
+```
+
+### `muted`
+
+- **Type:** `boolean`
+- **Default:** `false`
+- **Description:** Starts the video without audio.
+
+```js
+new VideoShorts('#container', videos, {
+  muted: true,
+  autoplay: true // autoplay usually requires muted
+});
+```
+
+### `loop`
+
+- **Type:** `boolean`
+- **Default:** `false`
+- **Description:** Restarts the video automatically when it ends.
+
+```js
+new VideoShorts('#container', videos, {
+  loop: true
+});
+```
+
+## YouTube Player
+
+### `controls`
+
+- **Type:** `number`
+- **Default:** `1`
+- **Description:** Displays YouTube player controls.
+  - `0` - Hides controls
+  - `1` - Shows controls
+
+```js
+new VideoShorts('#container', videos, {
+  controls: 0 // no visible controls
+});
+```
+
+### `rel`
+
+- **Type:** `number`
+- **Default:** `0`
+- **Description:** Controls the display of related videos at the end.
+  - `0` - Shows related videos from the same channel
+  - `1` - Shows related videos from any channel
+
+```js
+new VideoShorts('#container', videos, {
+  rel: 0 // only videos from the same channel
+});
+```
+
+### `modestbranding`
+
+- **Type:** `number`
+- **Default:** `1`
+- **Description:** Removes YouTube branding from the player.
+  - `0` - Shows full branding
+  - `1` - Reduces branding
+
+```js
+new VideoShorts('#container', videos, {
+  modestbranding: 1 // minimal branding
+});
+```
+
+## Callbacks
+
+### `onReady`
+
+- **Type:** `function`
+- **Description:** Called when a player is ready for playback.
+
+```js
+new VideoShorts('#container', videos, {
+  onReady: (event, index, instance) => {
+    console.log(`Video ${index} ready!`);
+  }
+});
+```
+
+### `onStateChange`
+
+- **Type:** `function`
+- **Description:** Called when the player state changes (play, pause, end, etc).
+
+```js
+new VideoShorts('#container', videos, {
+  onStateChange: (event, index, instance) => {
+    if (event.data === YT.PlayerState.PLAYING) {
+      console.log(`Video ${index} is playing`);
+    }
+  }
+});
+```
+
+### `onError`
+
+- **Type:** `function`
+- **Description:** Called when a player error occurs.
+
+```js
+new VideoShorts('#container', videos, {
+  onError: (event, index, instance) => {
+    console.error(`Error on video ${index}:`, event.data);
+  }
+});
+```

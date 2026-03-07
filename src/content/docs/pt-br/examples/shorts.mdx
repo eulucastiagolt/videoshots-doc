@@ -1,0 +1,328 @@
+---
+title: Shorts
+description: Exemplos de uso com YouTube Shorts.
+---
+
+## Shorts Simples
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VideoShorts - YouTube Shorts</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #0f0f0f;
+      min-height: 100vh;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1>YouTube Shorts</h1>
+  <div id="shorts-container" data-videoshort></div>
+
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
+  <script>
+    const shorts = new VideoShorts('#shorts-container', [
+      'https://www.youtube.com/shorts/ZDqo7XROuwM',
+      'https://www.youtube.com/shorts/dQw4w9WgXcQ'
+    ], {
+      lazy: true,
+      width: '280px',
+      aspectRatio: '9/16',
+      muted: true,
+      loop: true,
+      controls: 1
+    });
+
+    shorts.init();
+  </script>
+</body>
+</html>
+```
+
+## Layout de Feed (Instagram/TikTok Style)
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VideoShorts - Feed Style</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: system-ui, sans-serif;
+      background: #0f0f0f;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    #shorts-feed {
+      width: 100%;
+      max-width: 400px;
+    }
+    
+    .videoshort-container {
+      width: 100%;
+    }
+    
+    .videoshort-wrapper {
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 0;
+    }
+    
+    .videoshort-item {
+      width: 100% !important;
+      max-width: 360px;
+      aspect-ratio: 9/16 !important;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div id="shorts-feed" data-videoshort></div>
+
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
+  <script>
+    const feed = new VideoShorts('#shorts-feed', [
+      'https://www.youtube.com/shorts/ZDqo7XROuwM',
+      'https://www.youtube.com/shorts/dQw4w9WgXcQ',
+      'https://www.youtube.com/shorts/abc123'
+    ], {
+      lazy: true,
+      width: '360px',
+      aspectRatio: '9/16',
+      muted: true,
+      loop: true,
+      controls: 1,
+      modestbranding: 1
+    });
+
+    feed.init();
+  </script>
+</body>
+</html>
+```
+
+## Grid de Shorts
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VideoShorts - Grid de Shorts</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #1a1a1a;
+    }
+    
+    h1 {
+      color: #fff;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    #shorts-grid {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .videoshort-wrapper {
+      gap: 16px;
+    }
+    
+    .videoshort-item {
+      width: 200px !important;
+      border-radius: 12px;
+    }
+    
+    @media (max-width: 768px) {
+      .videoshort-item {
+        width: 160px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Shorts Grid</h1>
+  <div id="shorts-grid" data-videoshort></div>
+
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
+  <script>
+    const shorts = new VideoShorts('#shorts-grid', [
+      'https://www.youtube.com/shorts/ZDqo7XROuwM',
+      'https://www.youtube.com/shorts/dQw4w9WgXcQ',
+      'https://www.youtube.com/shorts/abc123',
+      'https://www.youtube.com/shorts/def456',
+      'https://www.youtube.com/shorts/ghi789',
+      'https://www.youtube.com/shorts/jkl012'
+    ], {
+      lazy: true,
+      width: '200px',
+      aspectRatio: '9/16',
+      muted: true,
+      loop: true,
+      controls: 1
+    });
+
+    shorts.init();
+  </script>
+</body>
+</html>
+```
+
+## Shorts com Controles Externos
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VideoShorts - Shorts com Controles</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #0f0f0f;
+      color: #fff;
+    }
+    
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    
+    .controls button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #333;
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    .controls button:hover {
+      background: #444;
+    }
+    
+    .controls button:active {
+      transform: scale(0.95);
+    }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <button onclick="shorts.play()">▶ Play All</button>
+    <button onclick="shorts.pause()">⏸ Pause All</button>
+    <button onclick="shorts.stop()">⏹ Stop All</button>
+    <button onclick="shorts.mute()">🔇 Mute All</button>
+    <button onclick="shorts.unMute()">🔊 Unmute All</button>
+  </div>
+  
+  <div id="shorts-container" data-videoshort></div>
+
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
+  <script>
+    const shorts = new VideoShorts('#shorts-container', [
+      'https://www.youtube.com/shorts/ZDqo7XROuwM',
+      'https://www.youtube.com/shorts/dQw4w9WgXcQ'
+    ], {
+      lazy: true,
+      width: '280px',
+      aspectRatio: '9/16',
+      muted: true,
+      loop: true
+    });
+
+    shorts.init();
+  </script>
+</body>
+</html>
+```
+
+## Shorts em React
+
+```jsx
+import { useEffect, useRef } from 'react';
+import VideoShorts from 'videoshots';
+import 'videoshots/dist/videoshots.min.css';
+
+function ShortsFeed({ shorts }) {
+  const containerRef = useRef(null);
+  const instanceRef = useRef(null);
+
+  useEffect(() => {
+    instanceRef.current = new VideoShorts(containerRef.current, shorts, {
+      lazy: true,
+      width: '280px',
+      aspectRatio: '9/16',
+      muted: true,
+      loop: true,
+      controls: 1
+    });
+
+    instanceRef.current.init();
+
+    return () => {
+      instanceRef.current?.destroy();
+    };
+  }, [shorts]);
+
+  const handlePlay = () => instanceRef.current?.play();
+  const handlePause = () => instanceRef.current?.pause();
+  const handleMute = () => instanceRef.current?.mute();
+  const handleUnmute = () => instanceRef.current?.unMute();
+
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginBottom: '20px' }}>
+        <button onClick={handlePlay}>Play All</button>
+        <button onClick={handlePause}>Pause All</button>
+        <button onClick={handleMute}>Mute</button>
+        <button onClick={handleUnmute}>Unmute</button>
+      </div>
+      <div ref={containerRef} data-videoshort />
+    </div>
+  );
+}
+
+export default ShortsFeed;
+```

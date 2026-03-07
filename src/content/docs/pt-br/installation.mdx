@@ -1,0 +1,84 @@
+---
+title: Instalação
+description: Como instalar o VideoShorts em seu projeto.
+---
+
+## Via NPM
+
+```bash
+npm install videoshots
+```
+
+## Via Yarn
+
+```bash
+yarn add videoshots
+```
+
+## Via PNPM
+
+```bash
+pnpm add videoshots
+```
+
+## CDN (jsDelivr)
+
+### JavaScript
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
+```
+
+### CSS
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
+```
+
+## CDN (unpkg)
+
+### JavaScript
+
+```html
+<script src="https://unpkg.com/videoshots/dist/videoshots.min.js"></script>
+```
+
+### CSS
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/videoshots/dist/videoshots.min.css">
+```
+
+## Download Manual
+
+Você também pode baixar os arquivos diretamente do repositório GitHub:
+
+1. Acesse [github.com/eulucastiagolt/videoshorts](https://github.com/eulucastiagolt/videoshorts)
+2. Baixe os arquivos `dist/videoshots.min.js` e `dist/videoshots.min.css`
+3. Inclua-os em seu projeto
+
+```html
+<link rel="stylesheet" href="path/to/videoshots.min.css">
+<script src="path/to/videoshots.min.js"></script>
+```
+
+## Verificando a Instalação
+
+Após a instalação, verifique se a biblioteca está disponível:
+
+### ES Modules
+
+```js
+import VideoShorts from 'videoshots';
+import 'videoshots/dist/videoshots.min.css';
+
+console.log(VideoShorts.version);
+```
+
+### CDN / Script Tag
+
+```js
+console.log(VideoShorts.version);
+```
+
+Se tudo estiver correto, você verá `'1.0.0'` no console.

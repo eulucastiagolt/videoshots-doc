@@ -1,0 +1,191 @@
+---
+title: 事件
+description: VideoShorts 中可用的事件回调。
+---
+
+事件通过配置选项中的回调函数定义。
+
+## onReady
+
+当 YouTube 播放器完全加载并准备好播放时调用。
+
+- **参数：**
+  - `event`：YouTube Player API 事件
+  - `index`：视频索引
+  - `instance`：VideoShorts 实例
+
+```js
+new VideoShorts('#container', videos, {
+  onReady: (event, index, instance) => {
+    console.log(`视频 ${index} 已准备好！`);
+    console.log('时长：', instance.getDuration(index));
+  }
+});
+```
+
+## onStateChange
+
+当播放器状态发生变化时调用。
+
+- **参数：**
+  - `event`：包含 `data` 属性的事件，`data` 包含新状态
+  - `index`：视频索引
+  - `instance`：VideoShorts 实例
+
+### 播放器状态
+
+| 值 | 常量 | 描述 |
+|-------|----------|-------------|
+| -1 | `YT.PlayerState.UNSTARTED` | 未开始 |
+| 0 | `YT.PlayerState.ENDED` | 已结束 |
+| 1 | `YT.PlayerState.PLAYING` | 正在播放 |
+| 2 | `YT.PlayerState.PAUSED` | 已暂停 |
+| 3 | `YT.PlayerState.BUFFERING` | 缓冲中 |
+| 5 | `YT.PlayerState.CUED` | 视频已提示 |
+
+```js
+new VideoShorts('#container', videos, {
+  onStateChange: (event, index, instance) => {
+    switch (event.data) {
+      case YT.PlayerState.PLAYING:
+        console.log(`视频 ${index} 开始播放`);
+        break;
+      case YT.PlayerState.PAUSED:
+        console.log(`视频 ${index} 已暂停`);
+        break;
+      case YT.PlayerState.ENDED:
+        console.log(`视频 ${index} 已结束`);
+        instance.play(index + 1); // 播放下一个视频
+        break;
+    }
+  }
+});
+```
+
+## onError
+
+当播放器发生错误时调用。
+
+- **参数：**
+  - `event`：包含 `data` 属性的事件，`data` 包含错误代码
+  - `index`：视频索引
+  - `instance`：VideoShorts 实例
+
+### 错误代码
+
+| 代码 | 描述 |
+|------|-------------|
+| 2 | 无效请求 |
+| 5 | HTML5 播放器错误 |
+| 100 | 视频未找到 |
+| 101 | 所有者不允许播放 |
+| 150 | 所有者不允许播放 |
+
+```js
+new VideoShorts('#container', videos, {
+  onError: (event, index, instance) => {
+    console.error(`视频 ${index} 发生错误：`, event.data);
+    
+    switch (event.data) {
+      case 100:
+        console.error('视频未找到或已删除');
+        break;
+      case 101:
+      case 150:
+        console.error('所有者不允许播放此视频');
+        break;
+    }
+  }
+});
+```
+
+## 完整示例
+
+```js
+const videos = new VideoShorts('#container', videoUrls, {
+  onReady: (event, index, instance) => {
+    console.log(`视频 ${index} 已准备好`);
+    updateUI();
+  },
+  
+  onStateChange: (event, index, instance) => {
+    if (event.data === YT.PlayerState.PLAYING) {
+      pauseOtherVideos(index);
+    }
+    if (event.data === YT.PlayerState.ENDED) {
+      playNextVideo(index);
+    }
+  },
+  
+  onError: (event, index, instance) => {
+    showErrorMessage(index, event.data);
+  }
+});
+
+await videos.init();
+```
+
+## 框架集成
+
+### React
+
+```jsx
+import { useEffect, useRef } from 'react';
+import VideoShorts from 'videoshots';
+import 'videoshots/dist/videoshots.min.css';
+
+function VideoPlayer({ videos }) {
+  const containerRef = useRef(null);
+  const instanceRef = useRef(null);
+
+  useEffect(() => {
+    instanceRef.current = new VideoShorts(containerRef.current, videos, {
+      onReady: (event, index) => {
+        console.log('已准备好：', index);
+      },
+      onStateChange: (event, index) => {
+        console.log('状态已更改：', index, event.data);
+      }
+    });
+
+    instanceRef.current.init();
+
+    return () => {
+      instanceRef.current?.destroy();
+    };
+  }, [videos]);
+
+  return <div ref={containerRef} data-videoshort />;
+}
+```
+
+### Vue
+
+```vue
+<template>
+  <div ref="container" data-videoshort></div>
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue';
+import VideoShorts from 'videoshots';
+import 'videoshots/dist/videoshots.min.css';
+
+const props = defineProps(['videos']);
+const container = ref(null);
+let instance = null;
+
+onMounted(async () => {
+  instance = new VideoShorts(container.value, props.videos, {
+    onReady: (event, index) => {
+      console.log('已准备好：', index);
+    }
+  });
+  await instance.init();
+});
+
+onUnmounted(() => {
+  instance?.destroy();
+});
+</script>
+```

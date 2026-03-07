@@ -1,0 +1,191 @@
+---
+title: Eventos
+description: Callbacks de eventos disponíveis no VideoShorts.
+---
+
+Os eventos são definidos através de callbacks nas opções de configuração.
+
+## onReady
+
+Chamado quando um player do YouTube está totalmente carregado e pronto para reprodução.
+
+- **Parâmetros:**
+  - `event`: Evento do YouTube Player API
+  - `index`: Índice do vídeo
+  - `instance`: Instância do VideoShorts
+
+```js
+new VideoShorts('#container', videos, {
+  onReady: (event, index, instance) => {
+    console.log(`Vídeo ${index} está pronto!`);
+    console.log('Duração:', instance.getDuration(index));
+  }
+});
+```
+
+## onStateChange
+
+Chamado quando o estado do player muda.
+
+- **Parâmetros:**
+  - `event`: Evento com `data` contendo o novo estado
+  - `index`: Índice do vídeo
+  - `instance`: Instância do VideoShorts
+
+### Estados do Player
+
+| Valor | Constante | Descrição |
+|-------|-----------|-----------|
+| -1 | `YT.PlayerState.UNSTARTED` | Não iniciado |
+| 0 | `YT.PlayerState.ENDED` | Encerrado |
+| 1 | `YT.PlayerState.PLAYING` | Reproduzindo |
+| 2 | `YT.PlayerState.PAUSED` | Pausado |
+| 3 | `YT.PlayerState.BUFFERING` | Carregando buffer |
+| 5 | `YT.PlayerState.CUED` | Vídeo indicado |
+
+```js
+new VideoShorts('#container', videos, {
+  onStateChange: (event, index, instance) => {
+    switch (event.data) {
+      case YT.PlayerState.PLAYING:
+        console.log(`Vídeo ${index} começou a reproduzir`);
+        break;
+      case YT.PlayerState.PAUSED:
+        console.log(`Vídeo ${index} foi pausado`);
+        break;
+      case YT.PlayerState.ENDED:
+        console.log(`Vídeo ${index} terminou`);
+        instance.play(index + 1); // reproduz próximo vídeo
+        break;
+    }
+  }
+});
+```
+
+## onError
+
+Chamado quando ocorre um erro no player.
+
+- **Parâmetros:**
+  - `event`: Evento com `data` contendo o código do erro
+  - `index`: Índice do vídeo
+  - `instance`: Instância do VideoShorts
+
+### Códigos de Erro
+
+| Código | Descrição |
+|--------|-----------|
+| 2 | Requisição inválida |
+| 5 | Erro HTML5 player |
+| 100 | Vídeo não encontrado |
+| 101 | Reprodução não permitida pelo proprietário |
+| 150 | Reprodução não permitida pelo proprietário |
+
+```js
+new VideoShorts('#container', videos, {
+  onError: (event, index, instance) => {
+    console.error(`Erro no vídeo ${index}:`, event.data);
+    
+    switch (event.data) {
+      case 100:
+        console.error('Vídeo não encontrado ou removido');
+        break;
+      case 101:
+      case 150:
+        console.error('Reprodução não permitida pelo proprietário');
+        break;
+    }
+  }
+});
+```
+
+## Exemplo Completo
+
+```js
+const videos = new VideoShorts('#container', videoUrls, {
+  onReady: (event, index, instance) => {
+    console.log(`Vídeo ${index} pronto`);
+    updateUI();
+  },
+  
+  onStateChange: (event, index, instance) => {
+    if (event.data === YT.PlayerState.PLAYING) {
+      pauseOtherVideos(index);
+    }
+    if (event.data === YT.PlayerState.ENDED) {
+      playNextVideo(index);
+    }
+  },
+  
+  onError: (event, index, instance) => {
+    showErrorMessage(index, event.data);
+  }
+});
+
+await videos.init();
+```
+
+## Integração com Frameworks
+
+### React
+
+```jsx
+import { useEffect, useRef } from 'react';
+import VideoShorts from 'videoshots';
+import 'videoshots/dist/videoshots.min.css';
+
+function VideoPlayer({ videos }) {
+  const containerRef = useRef(null);
+  const instanceRef = useRef(null);
+
+  useEffect(() => {
+    instanceRef.current = new VideoShorts(containerRef.current, videos, {
+      onReady: (event, index) => {
+        console.log('Ready:', index);
+      },
+      onStateChange: (event, index) => {
+        console.log('State changed:', index, event.data);
+      }
+    });
+
+    instanceRef.current.init();
+
+    return () => {
+      instanceRef.current?.destroy();
+    };
+  }, [videos]);
+
+  return <div ref={containerRef} data-videoshort />;
+}
+```
+
+### Vue
+
+```vue
+<template>
+  <div ref="container" data-videoshort></div>
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue';
+import VideoShorts from 'videoshots';
+import 'videoshots/dist/videoshots.min.css';
+
+const props = defineProps(['videos']);
+const container = ref(null);
+let instance = null;
+
+onMounted(async () => {
+  instance = new VideoShorts(container.value, props.videos, {
+    onReady: (event, index) => {
+      console.log('Ready:', index);
+    }
+  });
+  await instance.init();
+});
+
+onUnmounted(() => {
+  instance?.destroy();
+});
+</script>
+```

@@ -1,0 +1,338 @@
+---
+title: Métodos
+description: Referência completa de todos os métodos da API do VideoShorts.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Inicialização
+
+### `init()`
+
+Inicializa a instância do VideoShorts e renderiza os vídeos.
+
+- **Retorna:** `Promise<VideoShorts>`
+- **Exemplo:**
+
+```js
+const videos = new VideoShorts('#container', videoUrls, options);
+await videos.init();
+```
+
+### `destroy()`
+
+Destrói a instância, remove todos os players e limpa o DOM.
+
+- **Retorna:** `VideoShorts`
+- **Exemplo:**
+
+```js
+videos.destroy();
+```
+
+## Controle de Vídeo
+
+### `play(index?)`
+
+Inicia a reprodução de um ou todos os vídeos.
+
+- **Parâmetros:**
+  - `index` (opcional): Índice do vídeo específico. Se omitido, reproduz todos.
+- **Retorna:** `VideoShorts`
+
+<Tabs>
+  <TabItem label="Reproduzir Todos">
+    ```js
+    videos.play();
+    ```
+  </TabItem>
+  <TabItem label="Reproduzir Específico">
+    ```js
+    videos.play(0); // reproduz o primeiro vídeo
+    ```
+  </TabItem>
+</Tabs>
+
+### `pause(index?)`
+
+Pausa a reprodução de um ou todos os vídeos.
+
+- **Parâmetros:**
+  - `index` (opcional): Índice do vídeo específico. Se omitido, pausa todos.
+- **Retorna:** `VideoShorts`
+
+<Tabs>
+  <TabItem label="Pausar Todos">
+    ```js
+    videos.pause();
+    ```
+  </TabItem>
+  <TabItem label="Pausar Específico">
+    ```js
+    videos.pause(2); // pausa o terceiro vídeo
+    ```
+  </TabItem>
+</Tabs>
+
+### `stop(index?)`
+
+Para a reprodução e reinicia o vídeo de um ou todos os vídeos.
+
+- **Parâmetros:**
+  - `index` (opcional): Índice do vídeo específico. Se omitido, para todos.
+- **Retorna:** `VideoShorts`
+
+```js
+videos.stop();
+videos.stop(0); // para apenas o primeiro vídeo
+```
+
+### `seekTo(seconds, index?)`
+
+Avança ou retrocede para um ponto específico do vídeo.
+
+- **Parâmetros:**
+  - `seconds`: Tempo em segundos
+  - `index` (opcional): Índice do vídeo específico
+- **Retorna:** `VideoShorts`
+
+```js
+videos.seekTo(30); // todos os vídeos para 30 segundos
+videos.seekTo(60, 0); // primeiro vídeo para 60 segundos
+```
+
+## Controle de Áudio
+
+### `mute(index?)`
+
+Silencia um ou todos os vídeos.
+
+- **Parâmetros:**
+  - `index` (opcional): Índice do vídeo específico
+- **Retorna:** `VideoShorts`
+
+```js
+videos.mute();
+videos.mute(1); // silencia apenas o segundo vídeo
+```
+
+### `unMute(index?)`
+
+Ativa o áudio de um ou todos os vídeos.
+
+- **Parâmetros:**
+  - `index` (opcional): Índice do vídeo específico
+- **Retorna:** `VideoShorts`
+
+```js
+videos.unMute();
+videos.unMute(0); // ativa áudio do primeiro vídeo
+```
+
+### `toggleMute(index)`
+
+Alterna entre mudo e com áudio de um vídeo específico.
+
+- **Parâmetros:**
+  - `index`: Índice do vídeo
+- **Retorna:** `VideoShorts`
+
+```js
+videos.toggleMute(0);
+```
+
+### `setVolume(volume, index?)`
+
+Define o volume de um ou todos os vídeos.
+
+- **Parâmetros:**
+  - `volume`: Nível de volume (0-100)
+  - `index` (opcional): Índice do vídeo específico
+- **Retorna:** `VideoShorts`
+
+```js
+videos.setVolume(50); // 50% para todos
+videos.setVolume(75, 0); // 75% para o primeiro
+```
+
+### `getVolume(index)`
+
+Retorna o volume atual de um vídeo específico.
+
+- **Parâmetros:**
+  - `index`: Índice do vídeo
+- **Retorna:** `number | null`
+
+```js
+const volume = videos.getVolume(0);
+console.log(volume); // ex: 50
+```
+
+## Estado
+
+### `isMuted(index)`
+
+Verifica se um vídeo está mudo.
+
+- **Parâmetros:**
+  - `index`: Índice do vídeo
+- **Retorna:** `boolean | null`
+
+```js
+if (videos.isMuted(0)) {
+  videos.unMute(0);
+}
+```
+
+### `isPlaying(index)`
+
+Verifica se um vídeo está reproduzindo.
+
+- **Parâmetros:**
+  - `index`: Índice do vídeo
+- **Retorna:** `boolean | null`
+
+```js
+if (videos.isPlaying(0)) {
+  console.log('Vídeo está reproduzindo');
+}
+```
+
+### `isLoaded(index)`
+
+Verifica se um vídeo foi carregado.
+
+- **Parâmetros:**
+  - `index`: Índice do vídeo
+- **Retorna:** `boolean`
+
+```js
+if (videos.isLoaded(0)) {
+  videos.play(0);
+}
+```
+
+### `getPlayerState(index)`
+
+Retorna o estado atual do player do YouTube.
+
+- **Parâmetros:**
+  - `index`: Índice do vídeo
+- **Retorna:** `number | null`
+
+Estados possíveis:
+- `-1` - Não iniciado
+- `0` - Encerrado
+- `1` - Reproduzindo
+- `2` - Pausado
+- `3` - Buffering
+- `5` - Vídeo indicado
+
+```js
+const state = videos.getPlayerState(0);
+if (state === YT.PlayerState.PLAYING) {
+  console.log('Reproduzindo');
+}
+```
+
+### `getCurrentTime(index)`
+
+Retorna o tempo atual de reprodução em segundos.
+
+- **Parâmetros:**
+  - `index`: Índice do vídeo
+- **Retorna:** `number | null`
+
+```js
+const currentTime = videos.getCurrentTime(0);
+console.log(`Tempo atual: ${currentTime}s`);
+```
+
+### `getDuration(index)`
+
+Retorna a duração total do vídeo em segundos.
+
+- **Parâmetros:**
+  - `index`: Índice do vídeo
+- **Retorna:** `number | null`
+
+```js
+const duration = videos.getDuration(0);
+console.log(`Duração: ${duration}s`);
+```
+
+## Carregamento
+
+### `loadVideo(index)`
+
+Carrega um vídeo específico manualmente.
+
+- **Parâmetros:**
+  - `index`: Índice do vídeo
+- **Retorna:** `Promise<VideoShorts>`
+
+```js
+await videos.loadVideo(0);
+```
+
+## Dimensões
+
+### `setSize(options)`
+
+Atualiza as dimensões dos vídeos dinamicamente.
+
+- **Parâmetros:**
+  - `options`: Objeto com `width`, `height` e/ou `aspectRatio`
+- **Retorna:** `VideoShorts`
+
+```js
+videos.setSize({
+  width: '100%',
+  aspectRatio: '16/9'
+});
+
+videos.setSize({
+  width: '320px',
+  height: '180px'
+});
+```
+
+## Getters
+
+### `getPlayer(index)`
+
+Retorna a instância do player do YouTube para um vídeo específico.
+
+- **Parâmetros:**
+  - `index`: Índice do vídeo
+- **Retorna:** `YT.Player | null`
+
+```js
+const player = videos.getPlayer(0);
+if (player) {
+  const quality = player.getPlaybackQuality();
+  console.log(quality);
+}
+```
+
+### `getPlayers()`
+
+Retorna todos os players ativos.
+
+- **Retorna:** `YT.Player[]`
+
+```js
+const players = videos.getPlayers();
+console.log(`${players.length} players ativos`);
+```
+
+### `version`
+
+Retorna a versão da biblioteca.
+
+- **Tipo:** `string` (propriedade)
+
+```js
+console.log(videos.version); // "1.0.0"
+console.log(VideoShorts.version); // "1.0.0" (estático)
+```
