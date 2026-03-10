@@ -5,17 +5,24 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'VideoShorts',
+      description: 'A lightweight JavaScript library for embedding YouTube videos with lazy loading support.',
       defaultLocale: 'root',
+      customCss: ['./src/styles/custom.css'],
+      logo: {
+        src: './src/assets/logo.svg',
+        replacesTitle: true,
+      },
+      favicon: '/favicon.svg',
       locales: {
         root: {
           label: 'English',
           lang: 'en',
         },
-        'pt-br': {
+        'pt-BR': {
           label: 'Português (Brasil)',
           lang: 'pt-BR',
         },
-        zh: {
+        'zh-CN': {
           label: '中文',
           lang: 'zh-CN',
         },
@@ -23,6 +30,11 @@ export default defineConfig({
       social: {
         github: 'https://github.com/eulucastiagolt/videoshorts',
       },
+      editLink: {
+        baseUrl: 'https://github.com/eulucastiagolt/videoshorts-docs/edit/main/',
+      },
+      lastUpdated: true,
+      pagination: true,
       sidebar: [
         {
           label: 'Getting Started',

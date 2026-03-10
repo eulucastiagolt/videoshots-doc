@@ -1,0 +1,250 @@
+/* VideoShorts Custom Theme */
+
+:root {
+  /* Accent colors - Purple/Violet theme */
+  --sl-color-accent-low: #4c1d95;
+  --sl-color-accent: #7c3aed;
+  --sl-color-accent-high: #a78bfa;
+  
+  /* Content width */
+  --sl-content-width: 55rem;
+  
+  /* Typography */
+  --sl-font-system: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --sl-font-mono: 'SF Mono', 'Fira Code', 'Consolas', 'Monaco', monospace;
+  
+  /* Rounded corners */
+  --sl-border-radius: 0.75rem;
+  --sl-border-radius-md: 0.5rem;
+  --sl-border-radius-sm: 0.375rem;
+}
+
+/* Dark mode accent colors */
+:root[data-theme='dark'] {
+  --sl-color-accent-low: #5b21b6;
+  --sl-color-accent: #8b5cf6;
+  --sl-color-accent-high: #c4b5fd;
+}
+
+/* Header styling */
+header {
+  border-bottom: 1px solid var(--sl-color-gray-6);
+}
+
+/* Sidebar styling */
+.sidebar {
+  border-right: 1px solid var(--sl-color-gray-6);
+}
+
+.sidebar-pane {
+  background: var(--sl-color-bg);
+}
+
+/* Navigation links */
+.nav-link {
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--sl-color-accent);
+}
+
+/* Card styling */
+.card {
+  border-radius: var(--sl-border-radius);
+  border: 1px solid var(--sl-color-gray-6);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  border-color: var(--sl-color-accent);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Code blocks */
+pre {
+  border-radius: var(--sl-border-radius);
+  border: 1px solid var(--sl-color-gray-6);
+}
+
+code {
+  border-radius: var(--sl-border-radius-sm);
+}
+
+/* Links */
+a {
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--sl-color-accent);
+}
+
+/* Button styling */
+.link-button {
+  border-radius: var(--sl-border-radius);
+  transition: all 0.2s ease;
+}
+
+.link-button:hover {
+  transform: translateY(-1px);
+}
+
+/* Table of contents */
+.right-sidebar {
+  border-left: 1px solid var(--sl-color-gray-6);
+}
+
+/* Right sidebar headline */
+.right-sidebar-headline {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+/* Pagination */
+.pagination-links a {
+  border-radius: var(--sl-border-radius);
+  border: 1px solid var(--sl-color-gray-6);
+  transition: all 0.2s ease;
+}
+
+.pagination-links a:hover {
+  border-color: var(--sl-color-accent);
+}
+
+/* Search */
+.search-dialog {
+  border-radius: var(--sl-border-radius);
+  border: 1px solid var(--sl-color-gray-6);
+}
+
+/* Tabs */
+.tabs-list {
+  border-radius: var(--sl-border-radius);
+  background: var(--sl-color-gray-7);
+  padding: 0.25rem;
+}
+
+.tab {
+  border-radius: var(--sl-border-radius-md);
+  transition: all 0.2s ease;
+}
+
+.tab[aria-selected='true'] {
+  background: var(--sl-color-accent);
+  color: white;
+}
+
+/* Badge */
+.badge {
+  border-radius: var(--sl-border-radius-sm);
+  font-weight: 500;
+}
+
+/* Aside/Callout */
+aside {
+  border-radius: var(--sl-border-radius);
+  border-left-width: 4px;
+}
+
+/* Steps */
+.steps h2,
+.steps h3 {
+  counter-increment: step;
+}
+
+.steps h2::before,
+.steps h3::before {
+  content: counter(step);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.75rem;
+  background: var(--sl-color-accent);
+  color: white;
+  border-radius: 50%;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* File tree */
+.file-tree {
+  border-radius: var(--sl-border-radius);
+  border: 1px solid var(--sl-color-gray-6);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--sl-color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sl-color-gray-5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sl-color-gray-4);
+}
+
+/* Selection */
+::selection {
+  background: var(--sl-color-accent);
+  color: white;
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--sl-color-accent);
+  outline-offset: 2px;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hero section for splash pages */
+[data-has-hero] .hero {
+  padding: 3rem 0 2rem;
+}
+
+/* Feature cards grid */
+.card-grid {
+  gap: 1.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  :root {
+    --sl-content-width: 100%;
+  }
+  
+  .card:hover {
+    transform: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .sidebar,
+  .right-sidebar,
+  header,
+  footer {
+    display: none;
+  }
+  
+  main {
+    max-width: 100%;
+  }
+}
