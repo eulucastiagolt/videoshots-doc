@@ -64,6 +64,7 @@ export default defineConfig({
             { label: 'Basic', slug: 'doc/examples/basic' },
             { label: 'Shorts', slug: 'doc/examples/shorts' },
             { label: 'Controls', slug: 'doc/examples/controls' },
+            { label: 'Integration', slug: 'doc/examples/integration' },
           ],
         },
         {

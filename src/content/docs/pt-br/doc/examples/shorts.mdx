@@ -12,7 +12,7 @@ description: Exemplos de uso com YouTube Shorts.
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VideoShorts - YouTube Shorts</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.css">
   <style>
     body {
       font-family: system-ui, sans-serif;
@@ -32,7 +32,7 @@ description: Exemplos de uso com YouTube Shorts.
   <h1>YouTube Shorts</h1>
   <div id="shorts-container" data-videoshort></div>
 
-  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.js"></script>
   <script>
     const shorts = new VideoShorts('#shorts-container', [
       'https://www.youtube.com/shorts/ZDqo7XROuwM',
@@ -61,7 +61,7 @@ description: Exemplos de uso com YouTube Shorts.
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VideoShorts - Feed Style</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.css">
   <style>
     * {
       margin: 0;
@@ -107,7 +107,7 @@ description: Exemplos de uso com YouTube Shorts.
 <body>
   <div id="shorts-feed" data-videoshort></div>
 
-  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.js"></script>
   <script>
     const feed = new VideoShorts('#shorts-feed', [
       'https://www.youtube.com/shorts/ZDqo7XROuwM',
@@ -138,7 +138,7 @@ description: Exemplos de uso com YouTube Shorts.
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VideoShorts - Grid de Shorts</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.css">
   <style>
     body {
       font-family: system-ui, sans-serif;
@@ -178,7 +178,7 @@ description: Exemplos de uso com YouTube Shorts.
   <h1>Shorts Grid</h1>
   <div id="shorts-grid" data-videoshort></div>
 
-  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.js"></script>
   <script>
     const shorts = new VideoShorts('#shorts-grid', [
       'https://www.youtube.com/shorts/ZDqo7XROuwM',
@@ -211,7 +211,7 @@ description: Exemplos de uso com YouTube Shorts.
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VideoShorts - Shorts com Controles</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.css">
   <style>
     body {
       font-family: system-ui, sans-serif;
@@ -259,7 +259,7 @@ description: Exemplos de uso com YouTube Shorts.
   
   <div id="shorts-container" data-videoshort></div>
 
-  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.js"></script>
   <script>
     const shorts = new VideoShorts('#shorts-container', [
       'https://www.youtube.com/shorts/ZDqo7XROuwM',
@@ -282,8 +282,8 @@ description: Exemplos de uso com YouTube Shorts.
 
 ```jsx
 import { useEffect, useRef } from 'react';
-import VideoShorts from 'videoshots';
-import 'videoshots/dist/videoshots.min.css';
+import VideoShorts from 'videoshorts';
+import 'videoshorts/dist/videoshorts.min.css';
 
 function ShortsFeed({ shorts }) {
   const containerRef = useRef(null);

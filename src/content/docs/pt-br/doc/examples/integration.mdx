@@ -1,0 +1,234 @@
+---
+title: Integração
+description: Integração com bibliotecas externas como SwiperJS.
+---
+
+## SwiperJS
+
+VideoShorts funciona perfeitamente com SwiperJS e outras bibliotecas de carousel/slider.
+
+### Integração Básica com Swiper
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VideoShorts + SwiperJS</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.css">
+  <style>
+    .swiper {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    
+    .swiper-slide {
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="swiper">
+    <div class="swiper-wrapper" id="video-container"></div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.js"></script>
+  <script>
+    const videos = [
+      'https://www.youtube.com/shorts/ZDqo7XROuwM',
+      'https://www.youtube.com/watch?v=SGfb6y1j5x0',
+      'https://www.youtube.com/shorts/abc123'
+    ];
+
+    const player = new VideoShorts('#video-container', videos, {
+      insertPositionWrapper: 'beforeend',
+      insertPositionItem: 'beforeend',
+      width: '360px',
+      aspectRatio: '9/16'
+    });
+
+    player.init().then(() => {
+      const swiper = new Swiper('.swiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        pagination: {
+          el: '.swiper-pagination',
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+```
+
+### Suporte ao Modo Loop
+
+VideoShorts é totalmente compatível com bibliotecas de slider/carousel que usam **modo loop** (como o `loop: true` do SwiperJS). Quando slides são clonados para loop infinito, a biblioteca sincroniza automaticamente todos os elementos de UI (botões play/pause, botões mute, thumbnails) entre os slides originais e clonados.
+
+Isso é alcançado através de:
+- Atributo `data-instance-id` para isolar elementos por instância VideoShorts
+- Atributo `data-video-index` para identificar vídeos através dos clones
+- Queries dinâmicas de elementos que encontram todos os elementos correspondentes (original + clones)
+
+### Opções de Posição de Inserção
+
+As opções `insertPosition` controlam onde os elementos são inseridos no DOM. Valores possíveis:
+
+| Valor | Descrição |
+|-------|-------------|
+| `'beforebegin'` | Antes do elemento em si |
+| `'afterbegin'` | Dentro do elemento, antes do primeiro filho |
+| `'beforeend'` | Dentro do elemento, após o último filho |
+| `'afterend'` | Após o elemento em si |
+
+Use essas opções para controlar o posicionamento exato dos elementos de vídeo dentro da estrutura do seu slider/carousel.
+
+## React + SwiperJS
+
+```jsx
+import { useEffect, useRef, useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+import VideoShorts from 'videoshorts';
+import 'videoshorts/dist/videoshorts.min.css';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
+function VideoCarousel({ videos }) {
+  const containerRef = useRef(null);
+  const instanceRef = useRef(null);
+
+  useEffect(() => {
+    instanceRef.current = new VideoShorts(containerRef.current, videos, {
+      width: '100%',
+      aspectRatio: '9/16',
+      insertPositionWrapper: 'beforeend',
+      insertPositionItem: 'beforeend'
+    });
+
+    instanceRef.current.init();
+
+    return () => {
+      instanceRef.current?.destroy();
+    };
+  }, [videos]);
+
+  return (
+    <Swiper
+      modules={[Navigation, Pagination]}
+      spaceBetween={20}
+      slidesPerView={1}
+      navigation
+      pagination={{ clickable: true }}
+      loop
+    >
+      <div ref={containerRef} data-videoshort />
+    </Swiper>
+  );
+}
+
+export default VideoCarousel;
+```
+
+## Slick Carousel
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>VideoShorts + Slick</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.css">
+  <style>
+    .video-slider {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    
+    .slick-slide {
+      padding: 0 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="video-slider" id="video-container"></div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.js"></script>
+  <script>
+    const videos = [
+      'https://www.youtube.com/shorts/ZDqo7XROuwM',
+      'https://www.youtube.com/watch?v=SGfb6y1j5x0'
+    ];
+
+    const player = new VideoShorts('#video-container', videos, {
+      insertPositionWrapper: 'beforeend',
+      insertPositionItem: 'beforeend',
+      width: '360px',
+      aspectRatio: '9/16'
+    });
+
+    player.init().then(() => {
+      $('.video-slider').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: true,
+        dots: true,
+        infinite: true
+      });
+    });
+  </script>
+</body>
+</html>
+```
+
+## Dicas para Integração
+
+### Inicialize Após os Vídeos Carregarem
+
+Sempre inicialize seu slider/carousel após o VideoShorts terminar de renderizar:
+
+```js
+player.init().then(() => {
+  // Inicialize seu slider aqui
+  const slider = new MySlider('.container');
+});
+```
+
+### Use o Atributo `data-videoshort`
+
+Adicione `data-videoshort` ao seu container para evitar conflitos de CSS:
+
+```html
+<div id="video-container" data-videoshort></div>
+```
+
+### Gerencie Lazy Loading
+
+Ao usar lazy loading, garanta que seu slider recalcule as dimensões quando os vídeos carregarem:
+
+```js
+player.init().then(() => {
+  const swiper = new Swiper('.swiper', { /* opções */ });
+  
+  // Atualize o swiper quando os vídeos carregarem
+  player.onReady = (event, index) => {
+    swiper.update();
+  };
+});
+```

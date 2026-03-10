@@ -16,15 +16,15 @@ description: 只需几分钟即可开始使用 VideoShorts。
 ### 2. 导入库和 CSS
 
 ```js
-import VideoShorts from 'videoshots';
-import 'videoshots/dist/videoshots.min.css';
+import VideoShorts from 'videoshorts';
+import 'videoshorts/dist/videoshorts.min.css';
 ```
 
 或使用 CDN：
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/videoshots/dist/videoshots.min.css">
-<script src="https://cdn.jsdelivr.net/npm/videoshots/dist/videoshots.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/videoshorts/dist/videoshorts.min.css">
+<script src="https://cdn.jsdelivr.net/npm/videoshorts/dist/videoshorts.min.js"></script>
 ```
 
 ### 3. 创建实例
@@ -59,13 +59,13 @@ VideoShorts 接受多种 YouTube URL 格式：
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VideoShorts 示例</title>
-  <link rel="stylesheet" href="videoshots.min.css">
+  <link rel="stylesheet" href="videoshorts.min.css">
 </head>
 <body>
   <h2>我的短视频</h2>
   <div id="video-container" data-videoshort></div>
 
-  <script src="videoshots.min.js"></script>
+  <script src="videoshorts.min.js"></script>
   <script>
     const videos = new VideoShorts('#video-container', [
       'https://www.youtube.com/shorts/ZDqo7XROuwM',

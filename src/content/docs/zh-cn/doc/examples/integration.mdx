@@ -1,0 +1,234 @@
+---
+title: 集成
+description: 与 SwiperJS 等外部库集成。
+---
+
+## SwiperJS
+
+VideoShorts 可以与 SwiperJS 和其他轮播/滑块库无缝协作。
+
+### 基本Swiper集成
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VideoShorts + SwiperJS</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.css">
+  <style>
+    .swiper {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    
+    .swiper-slide {
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="swiper">
+    <div class="swiper-wrapper" id="video-container"></div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.js"></script>
+  <script>
+    const videos = [
+      'https://www.youtube.com/shorts/ZDqo7XROuwM',
+      'https://www.youtube.com/watch?v=SGfb6y1j5x0',
+      'https://www.youtube.com/shorts/abc123'
+    ];
+
+    const player = new VideoShorts('#video-container', videos, {
+      insertPositionWrapper: 'beforeend',
+      insertPositionItem: 'beforeend',
+      width: '360px',
+      aspectRatio: '9/16'
+    });
+
+    player.init().then(() => {
+      const swiper = new Swiper('.swiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        pagination: {
+          el: '.swiper-pagination',
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+```
+
+### 循环模式支持
+
+VideoShorts 完全兼容使用 **循环模式** 的轮播/滑块库（如 SwiperJS 的 `loop: true`）。当为无限循环克隆幻灯片时，库会自动同步原始幻灯片和克隆幻灯片之间的所有 UI 元素（播放/暂停按钮、静音按钮、缩略图）。
+
+这是通过以下方式实现的：
+- `data-instance-id` 属性用于隔离每个 VideoShorts 实例的元素
+- `data-video-index` 属性用于跨克隆识别视频
+- 动态元素查询，查找所有匹配元素（原始+克隆）
+
+### 插入位置选项
+
+`insertPosition` 选项控制元素在 DOM 中的插入位置。可能的值：
+
+| 值 | 描述 |
+|-------|-------------|
+| `'beforebegin'` | 元素本身之前 |
+| `'afterbegin'` | 元素内部，第一个子元素之前 |
+| `'beforeend'` | 元素内部，最后一个子元素之后 |
+| `'afterend'` | 元素本身之后 |
+
+使用这些选项可以精确控制视频元素在滑块/轮播结构中的放置位置。
+
+## React + SwiperJS
+
+```jsx
+import { useEffect, useRef, useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+import VideoShorts from 'videoshorts';
+import 'videoshorts/dist/videoshorts.min.css';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
+function VideoCarousel({ videos }) {
+  const containerRef = useRef(null);
+  const instanceRef = useRef(null);
+
+  useEffect(() => {
+    instanceRef.current = new VideoShorts(containerRef.current, videos, {
+      width: '100%',
+      aspectRatio: '9/16',
+      insertPositionWrapper: 'beforeend',
+      insertPositionItem: 'beforeend'
+    });
+
+    instanceRef.current.init();
+
+    return () => {
+      instanceRef.current?.destroy();
+    };
+  }, [videos]);
+
+  return (
+    <Swiper
+      modules={[Navigation, Pagination]}
+      spaceBetween={20}
+      slidesPerView={1}
+      navigation
+      pagination={{ clickable: true }}
+      loop
+    >
+      <div ref={containerRef} data-videoshort />
+    </Swiper>
+  );
+}
+
+export default VideoCarousel;
+```
+
+## Slick Carousel
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>VideoShorts + Slick</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.css">
+  <style>
+    .video-slider {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    
+    .slick-slide {
+      padding: 0 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="video-slider" id="video-container"></div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.js"></script>
+  <script>
+    const videos = [
+      'https://www.youtube.com/shorts/ZDqo7XROuwM',
+      'https://www.youtube.com/watch?v=SGfb6y1j5x0'
+    ];
+
+    const player = new VideoShorts('#video-container', videos, {
+      insertPositionWrapper: 'beforeend',
+      insertPositionItem: 'beforeend',
+      width: '360px',
+      aspectRatio: '9/16'
+    });
+
+    player.init().then(() => {
+      $('.video-slider').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: true,
+        dots: true,
+        infinite: true
+      });
+    });
+  </script>
+</body>
+</html>
+```
+
+## 集成技巧
+
+### 视频加载后初始化
+
+始终在 VideoShorts 完成渲染后初始化您的滑块/轮播：
+
+```js
+player.init().then(() => {
+  // 在这里初始化您的滑块
+  const slider = new MySlider('.container');
+});
+```
+
+### 使用 `data-videoshort` 属性
+
+在容器上添加 `data-videoshort` 以避免 CSS 冲突：
+
+```html
+<div id="video-container" data-videoshort></div>
+```
+
+### 处理延迟加载
+
+使用延迟加载时，确保视频加载时滑块重新计算尺寸：
+
+```js
+player.init().then(() => {
+  const swiper = new Swiper('.swiper', { /* 选项 */ });
+  
+  // 视频加载时刷新 swiper
+  player.onReady = (event, index) => {
+    swiper.update();
+  };
+});
+```

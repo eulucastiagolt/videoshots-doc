@@ -12,7 +12,7 @@ description: Basic example of VideoShorts usage.
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VideoShorts - Basic Example</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.css">
   <style>
     body {
       font-family: system-ui, sans-serif;
@@ -31,7 +31,7 @@ description: Basic example of VideoShorts usage.
   <h1>My Videos</h1>
   <div id="video-container" data-videoshort></div>
 
-  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.js"></script>
   <script>
     const videos = new VideoShorts('#video-container', [
       'https://www.youtube.com/watch?v=SGfb6y1j5x0',
@@ -53,8 +53,8 @@ description: Basic example of VideoShorts usage.
 ## With ES Modules
 
 ```js
-import VideoShorts from 'videoshots';
-import 'videoshots/dist/videoshots.min.css';
+import VideoShorts from 'videoshorts';
+import 'videoshorts/dist/videoshorts.min.css';
 
 const videos = new VideoShorts('#container', [
   'https://www.youtube.com/watch?v=SGfb6y1j5x0',
@@ -68,8 +68,8 @@ await videos.init();
 
 ```jsx
 import { useEffect, useRef } from 'react';
-import VideoShorts from 'videoshots';
-import 'videoshots/dist/videoshots.min.css';
+import VideoShorts from 'videoshorts';
+import 'videoshorts/dist/videoshorts.min.css';
 
 function VideoGallery({ videoUrls }) {
   const containerRef = useRef(null);
@@ -116,8 +116,8 @@ export default VideoGallery;
 
 <script setup>
 import { ref, onMounted, onUnmounted, watch } from 'vue';
-import VideoShorts from 'videoshots';
-import 'videoshots/dist/videoshots.min.css';
+import VideoShorts from 'videoshorts';
+import 'videoshorts/dist/videoshorts.min.css';
 
 const props = defineProps({
   videos: {
@@ -170,7 +170,7 @@ function VideoPlayer({ videos }) {
   useEffect(() => {
     let VideoShorts;
 
-    import('videoshots').then((module) => {
+    import('videoshorts').then((module) => {
       VideoShorts = module.default;
       
       instanceRef.current = new VideoShorts(containerRef.current, videos, {
@@ -202,7 +202,7 @@ export default dynamic(() => Promise.resolve(VideoPlayer), { ssr: false });
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VideoShorts - Responsive Grid</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.css">
   <style>
     #video-container {
       max-width: 1200px;
@@ -235,7 +235,7 @@ export default dynamic(() => Promise.resolve(VideoPlayer), { ssr: false });
 <body>
   <div id="video-container" data-videoshort></div>
 
-  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.0.0/dist/videoshots.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.7/dist/videoshorts.min.js"></script>
   <script>
     const videos = new VideoShorts('#video-container', [
       'https://www.youtube.com/watch?v=SGfb6y1j5x0',

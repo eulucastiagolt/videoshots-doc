@@ -1,6 +1,6 @@
 ---
-title: 配置选项
-description: VideoShorts 中可用的所有配置选项。
+title: 选项
+description: VideoShorts 所有可用的配置选项。
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
@@ -9,32 +9,58 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 ```js
 const DEFAULT_OPTIONS = {
+  // CSS 类
   containerClass: 'videoshort-container',
   wrapperClass: 'videoshort-wrapper',
   itemClass: 'videoshort-item',
   skeletonClass: 'videoshort-skeleton',
+  overlayClass: 'videoshort-overlay',
+  playButtonClass: 'videoshort-play-button',
+  muteButtonClass: 'videoshort-mute-button',
+
+  // 按钮图标
+  playButtonIcon: '▶',
+  pauseButtonIcon: '⏸',
+  muteButtonIcon: '🔇',
+  unmuteButtonIcon: '🔊',
+
+  // 缩略图
+  showThumbnail: true,
+  thumbnailClass: 'videoshort-thumbnail',
+  thumbnailTransitionDuration: '0.3s',
+  showThumbnailOnPause: false,
+
+  // 懒加载
   lazy: true,
   lazyThreshold: 0.1,
   lazyRootMargin: '200px',
+
+  // 尺寸
   width: '360px',
   height: null,
   aspectRatio: '9/16',
+
+  // YouTube 播放器
   autoplay: false,
   muted: false,
   loop: false,
   controls: 1,
   rel: 0,
-  modestbranding: 1
+  modestbranding: 1,
+
+  // 插入位置
+  insertPositionWrapper: 'beforeend',
+  insertPositionItem: 'beforeend'
 };
 ```
 
-## CSS 类名
+## CSS 类
 
 ### `containerClass`
 
 - **类型:** `string`
 - **默认值:** `'videoshort-container'`
-- **描述:** 应用于主容器的 CSS 类名。
+- **描述:** 应用于主容器的 CSS 类。
 
 ```js
 new VideoShorts('#container', videos, {
@@ -46,7 +72,7 @@ new VideoShorts('#container', videos, {
 
 - **类型:** `string`
 - **默认值:** `'videoshort-wrapper'`
-- **描述:** 应用于视频包装器的 CSS 类名。
+- **描述:** 应用于视频包装器的 CSS 类。
 
 ```js
 new VideoShorts('#container', videos, {
@@ -58,7 +84,7 @@ new VideoShorts('#container', videos, {
 
 - **类型:** `string`
 - **默认值:** `'videoshort-item'`
-- **描述:** 应用于每个视频项的 CSS 类名。
+- **描述:** 应用于每个视频项的 CSS 类。
 
 ```js
 new VideoShorts('#container', videos, {
@@ -70,11 +96,161 @@ new VideoShorts('#container', videos, {
 
 - **类型:** `string`
 - **默认值:** `'videoshort-skeleton'`
-- **描述:** 应用于加载骨架屏的 CSS 类名。
+- **描述:** 应用于加载骨架屏的 CSS 类。
 
 ```js
 new VideoShorts('#container', videos, {
   skeletonClass: 'my-skeleton'
+});
+```
+
+### `overlayClass`
+
+- **类型:** `string`
+- **默认值:** `'videoshort-overlay'`
+- **描述:** 应用于覆盖层元素的 CSS 类。
+
+```js
+new VideoShorts('#container', videos, {
+  overlayClass: 'my-overlay'
+});
+```
+
+### `playButtonClass`
+
+- **类型:** `string`
+- **默认值:** `'videoshort-play-button'`
+- **描述:** 应用于播放/暂停按钮的 CSS 类。
+
+```js
+new VideoShorts('#container', videos, {
+  playButtonClass: 'my-play-btn'
+});
+```
+
+### `muteButtonClass`
+
+- **类型:** `string`
+- **默认值:** `'videoshort-mute-button'`
+- **描述:** 应用于静音/取消静音按钮的 CSS 类。
+
+```js
+new VideoShorts('#container', videos, {
+  muteButtonClass: 'my-mute-btn'
+});
+```
+
+## UI 控件
+
+### `playButtonIcon`
+
+- **类型:** `string`
+- **默认值:** `'▶'`
+- **描述:** 播放按钮的图标。可以是文本或 SVG。
+
+```js
+new VideoShorts('#container', videos, {
+  playButtonIcon: '▶',
+  // 或使用 SVG
+  playButtonIcon: '<svg>...</svg>'
+});
+```
+
+### `pauseButtonIcon`
+
+- **类型:** `string`
+- **默认值:** `'⏸'`
+- **描述:** 暂停按钮的图标。
+
+```js
+new VideoShorts('#container', videos, {
+  pauseButtonIcon: '⏸'
+});
+```
+
+### `muteButtonIcon`
+
+- **类型:** `string`
+- **默认值:** `'🔇'`
+- **描述:** 静音状态的图标。
+
+```js
+new VideoShorts('#container', videos, {
+  muteButtonIcon: '🔇'
+});
+```
+
+### `unmuteButtonIcon`
+
+- **类型:** `string`
+- **默认值:** `'🔊'`
+- **描述:** 取消静音状态的图标。
+
+```js
+new VideoShorts('#container', videos, {
+  unmuteButtonIcon: '🔊'
+});
+```
+
+## 缩略图
+
+### `showThumbnail`
+
+- **类型:** `boolean`
+- **默认值:** `true`
+- **描述:** 在播放前显示视频缩略图覆盖在播放器上。
+
+```js
+new VideoShorts('#container', videos, {
+  showThumbnail: true
+});
+```
+
+### `thumbnailClass`
+
+- **类型:** `string`
+- **默认值:** `'videoshort-thumbnail'`
+- **描述:** 应用于缩略图元素的 CSS 类。
+
+```js
+new VideoShorts('#container', videos, {
+  thumbnailClass: 'my-thumbnail'
+});
+```
+
+### `thumbnailTransitionDuration`
+
+- **类型:** `string`
+- **默认值:** `'0.3s'`
+- **描述:** 缩略图淡入淡出过渡的持续时间。
+
+```js
+new VideoShorts('#container', videos, {
+  thumbnailTransitionDuration: '0.5s'
+});
+```
+
+### `showThumbnailOnPause`
+
+- **类型:** `boolean`
+- **默认值:** `false`
+- **描述:** 视频暂停时显示缩略图。
+
+```js
+new VideoShorts('#container', videos, {
+  showThumbnailOnPause: true
+});
+```
+
+### `thumbnailFallbackIcon`
+
+- **类型:** `string`
+- **默认值:** `'<svg>...</svg>'`
+- **描述:** 缩略图加载失败时显示的 SVG 图标。
+
+```js
+new VideoShorts('#container', videos, {
+  thumbnailFallbackIcon: '<svg>...</svg>'
 });
 ```
 
@@ -84,13 +260,13 @@ new VideoShorts('#container', videos, {
 
 - **类型:** `boolean`
 - **默认值:** `true`
-- **描述:** 启用或禁用视频懒加载。
+- **描述:** 启用或禁用视频的懒加载。
 
 <Tabs>
   <TabItem label="启用">
     ```js
     new VideoShorts('#container', videos, {
-      lazy: true // 视频在进入视口时加载
+      lazy: true // 视频进入视口时加载
     });
     ```
   </TabItem>
@@ -107,7 +283,7 @@ new VideoShorts('#container', videos, {
 
 - **类型:** `number`
 - **默认值:** `0.1`
-- **描述:** Intersection Observer 阈值（0 到 1）。定义元素在加载前必须可见的比例。
+- **描述:** Intersection Observer 阈值（0 到 1）。定义元素必须可见多少才加载。
 
 ```js
 new VideoShorts('#container', videos, {
@@ -119,11 +295,11 @@ new VideoShorts('#container', videos, {
 
 - **类型:** `string`
 - **默认值:** `'200px'`
-- **描述:** Intersection Observer 根元素的边距。允许在视频进入视口之前开始加载。
+- **描述:** Intersection Observer 根周围的边距。允许在视频进入视口之前加载。
 
 ```js
 new VideoShorts('#container', videos, {
-  lazyRootMargin: '400px' // 在进入视口前 400px 开始加载
+  lazyRootMargin: '400px' // 进入视口前 400px 开始加载
 });
 ```
 
@@ -137,7 +313,7 @@ new VideoShorts('#container', videos, {
 
 ```js
 new VideoShorts('#container', videos, {
-  width: '280px' // 较小的 Shorts
+  width: '280px' // 用于较小的 Shorts
 });
 ```
 
@@ -164,7 +340,7 @@ new VideoShorts('#container', videos, {
 
 - **类型:** `string`
 - **默认值:** `'9/16'`
-- **描述:** 视频的宽高比。如果设置了 `height`，则此选项被忽略。
+- **描述:** 视频的宽高比。如果设置了 `height` 则忽略。
 
 <Tabs>
   <TabItem label="Shorts (9/16)">
@@ -263,27 +439,62 @@ new VideoShorts('#container', videos, {
 
 - **类型:** `number`
 - **默认值:** `1`
-- **描述:** 移除播放器中的 YouTube 品牌标识。
-  - `0` - 显示完整品牌标识
-  - `1` - 减少品牌标识
+- **描述:** 从播放器中移除 YouTube 品牌。
+  - `0` - 显示完整品牌
+  - `1` - 减少品牌显示
 
 ```js
 new VideoShorts('#container', videos, {
-  modestbranding: 1 // 最小化品牌标识
+  modestbranding: 1 // 最小品牌显示
 });
 ```
+
+## 插入位置
+
+### `insertPositionWrapper`
+
+- **类型:** `string`
+- **默认值:** `'beforeend'`
+- **描述:** 在容器中插入包装器的位置。
+
+| 值 | 描述 |
+|-------|-------------|
+| `'beforebegin'` | 元素本身之前 |
+| `'afterbegin'` | 元素内部，第一个子元素之前 |
+| `'beforeend'` | 元素内部，最后一个子元素之后 |
+| `'afterend'` | 元素本身之后 |
+
+```js
+new VideoShorts('#container', videos, {
+  insertPositionWrapper: 'beforeend'
+});
+```
+
+### `insertPositionItem`
+
+- **类型:** `string`
+- **默认值:** `'beforeend'`
+- **描述:** 在包装器中插入视频项的位置。
+
+```js
+new VideoShorts('#container', videos, {
+  insertPositionItem: 'afterbegin'
+});
+```
+
+使用这些选项可以精确控制视频元素在滑块/轮播结构中的放置位置。
 
 ## 回调函数
 
 ### `onReady`
 
 - **类型:** `function`
-- **描述:** 播放器准备就绪时调用。
+- **描述:** 当播放器准备好播放时调用。
 
 ```js
 new VideoShorts('#container', videos, {
   onReady: (event, index, instance) => {
-    console.log(`视频 ${index} 已就绪！`);
+    console.log(`视频 ${index} 已准备就绪！`);
   }
 });
 ```
@@ -291,7 +502,7 @@ new VideoShorts('#container', videos, {
 ### `onStateChange`
 
 - **类型:** `function`
-- **描述:** 播放器状态改变时调用（播放、暂停、结束等）。
+- **描述:** 当播放器状态改变时调用（播放、暂停、结束等）。
 
 ```js
 new VideoShorts('#container', videos, {
@@ -303,10 +514,37 @@ new VideoShorts('#container', videos, {
 });
 ```
 
+### `onPlay`
+
+- **类型:** `function`
+- **描述:** 当视频开始播放时调用。
+
+```js
+new VideoShorts('#container', videos, {
+  onPlay: (event, index, instance) => {
+    console.log(`视频 ${index} 开始播放`);
+  }
+});
+```
+
+### `onEnd`
+
+- **类型:** `function`
+- **描述:** 当视频结束时调用。
+
+```js
+new VideoShorts('#container', videos, {
+  onEnd: (event, index, instance) => {
+    console.log(`视频 ${index} 已结束`);
+    instance.play(index + 1); // 播放下一个视频
+  }
+});
+```
+
 ### `onError`
 
 - **类型:** `function`
-- **描述:** 播放器发生错误时调用。
+- **描述:** 当播放器发生错误时调用。
 
 ```js
 new VideoShorts('#container', videos, {

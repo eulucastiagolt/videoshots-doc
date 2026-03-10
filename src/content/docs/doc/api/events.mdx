@@ -166,8 +166,8 @@ await videos.init();
 
 ```jsx
 import { useEffect, useRef } from 'react';
-import VideoShorts from 'videoshots';
-import 'videoshots/dist/videoshots.min.css';
+import VideoShorts from 'videoshorts';
+import 'videoshorts/dist/videoshorts.min.css';
 
 function VideoPlayer({ videos }) {
   const containerRef = useRef(null);
@@ -203,8 +203,8 @@ function VideoPlayer({ videos }) {
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-import VideoShorts from 'videoshots';
-import 'videoshots/dist/videoshots.min.css';
+import VideoShorts from 'videoshorts';
+import 'videoshorts/dist/videoshorts.min.css';
 
 const props = defineProps(['videos']);
 const container = ref(null);

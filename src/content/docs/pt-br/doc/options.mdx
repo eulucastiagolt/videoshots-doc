@@ -9,22 +9,48 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 ```js
 const DEFAULT_OPTIONS = {
+  // Classes CSS
   containerClass: 'videoshort-container',
   wrapperClass: 'videoshort-wrapper',
   itemClass: 'videoshort-item',
   skeletonClass: 'videoshort-skeleton',
+  overlayClass: 'videoshort-overlay',
+  playButtonClass: 'videoshort-play-button',
+  muteButtonClass: 'videoshort-mute-button',
+
+  // Ícones dos Botões
+  playButtonIcon: '▶',
+  pauseButtonIcon: '⏸',
+  muteButtonIcon: '🔇',
+  unmuteButtonIcon: '🔊',
+
+  // Thumbnail
+  showThumbnail: true,
+  thumbnailClass: 'videoshort-thumbnail',
+  thumbnailTransitionDuration: '0.3s',
+  showThumbnailOnPause: false,
+
+  // Lazy Loading
   lazy: true,
   lazyThreshold: 0.1,
   lazyRootMargin: '200px',
+
+  // Dimensões
   width: '360px',
   height: null,
   aspectRatio: '9/16',
+
+  // Player do YouTube
   autoplay: false,
   muted: false,
   loop: false,
   controls: 1,
   rel: 0,
-  modestbranding: 1
+  modestbranding: 1,
+
+  // Posição de Inserção
+  insertPositionWrapper: 'beforeend',
+  insertPositionItem: 'beforeend'
 };
 ```
 
@@ -38,7 +64,7 @@ const DEFAULT_OPTIONS = {
 
 ```js
 new VideoShorts('#container', videos, {
-  containerClass: 'my-custom-container'
+  containerClass: 'meu-container-personalizado'
 });
 ```
 
@@ -50,7 +76,7 @@ new VideoShorts('#container', videos, {
 
 ```js
 new VideoShorts('#container', videos, {
-  wrapperClass: 'my-custom-wrapper'
+  wrapperClass: 'meu-wrapper-personalizado'
 });
 ```
 
@@ -62,7 +88,7 @@ new VideoShorts('#container', videos, {
 
 ```js
 new VideoShorts('#container', videos, {
-  itemClass: 'my-video-item'
+  itemClass: 'meu-item-video'
 });
 ```
 
@@ -74,7 +100,157 @@ new VideoShorts('#container', videos, {
 
 ```js
 new VideoShorts('#container', videos, {
-  skeletonClass: 'my-skeleton'
+  skeletonClass: 'meu-skeleton'
+});
+```
+
+### `overlayClass`
+
+- **Tipo:** `string`
+- **Padrão:** `'videoshort-overlay'`
+- **Descrição:** Classe CSS aplicada ao elemento de overlay.
+
+```js
+new VideoShorts('#container', videos, {
+  overlayClass: 'meu-overlay'
+});
+```
+
+### `playButtonClass`
+
+- **Tipo:** `string`
+- **Padrão:** `'videoshort-play-button'`
+- **Descrição:** Classe CSS aplicada ao botão play/pause.
+
+```js
+new VideoShorts('#container', videos, {
+  playButtonClass: 'meu-btn-play'
+});
+```
+
+### `muteButtonClass`
+
+- **Tipo:** `string`
+- **Padrão:** `'videoshort-mute-button'`
+- **Descrição:** Classe CSS aplicada ao botão mute/unmute.
+
+```js
+new VideoShorts('#container', videos, {
+  muteButtonClass: 'meu-btn-mute'
+});
+```
+
+## Controles de UI
+
+### `playButtonIcon`
+
+- **Tipo:** `string`
+- **Padrão:** `'▶'`
+- **Descrição:** Ícone para o botão play. Pode ser texto ou SVG.
+
+```js
+new VideoShorts('#container', videos, {
+  playButtonIcon: '▶',
+  // ou use SVG
+  playButtonIcon: '<svg>...</svg>'
+});
+```
+
+### `pauseButtonIcon`
+
+- **Tipo:** `string`
+- **Padrão:** `'⏸'`
+- **Descrição:** Ícone para o botão pause.
+
+```js
+new VideoShorts('#container', videos, {
+  pauseButtonIcon: '⏸'
+});
+```
+
+### `muteButtonIcon`
+
+- **Tipo:** `string`
+- **Padrão:** `'🔇'`
+- **Descrição:** Ícone para o estado mudo.
+
+```js
+new VideoShorts('#container', videos, {
+  muteButtonIcon: '🔇'
+});
+```
+
+### `unmuteButtonIcon`
+
+- **Tipo:** `string`
+- **Padrão:** `'🔊'`
+- **Descrição:** Ícone para o estado sem mudo.
+
+```js
+new VideoShorts('#container', videos, {
+  unmuteButtonIcon: '🔊'
+});
+```
+
+## Thumbnail
+
+### `showThumbnail`
+
+- **Tipo:** `boolean`
+- **Padrão:** `true`
+- **Descrição:** Mostra a thumbnail do vídeo sobre o player antes da reprodução.
+
+```js
+new VideoShorts('#container', videos, {
+  showThumbnail: true
+});
+```
+
+### `thumbnailClass`
+
+- **Tipo:** `string`
+- **Padrão:** `'videoshort-thumbnail'`
+- **Descrição:** Classe CSS aplicada ao elemento de thumbnail.
+
+```js
+new VideoShorts('#container', videos, {
+  thumbnailClass: 'minha-thumbnail'
+});
+```
+
+### `thumbnailTransitionDuration`
+
+- **Tipo:** `string`
+- **Padrão:** `'0.3s'`
+- **Descrição:** Duração da transição de fade da thumbnail.
+
+```js
+new VideoShorts('#container', videos, {
+  thumbnailTransitionDuration: '0.5s'
+});
+```
+
+### `showThumbnailOnPause`
+
+- **Tipo:** `boolean`
+- **Padrão:** `false`
+- **Descrição:** Mostra a thumbnail quando o vídeo está pausado.
+
+```js
+new VideoShorts('#container', videos, {
+  showThumbnailOnPause: true
+});
+```
+
+### `thumbnailFallbackIcon`
+
+- **Tipo:** `string`
+- **Padrão:** `'<svg>...</svg>'`
+- **Descrição:** Ícone SVG exibido quando a thumbnail falha ao carregar.
+
+```js
+new VideoShorts('#container', videos, {
+  thumbnailFallbackIcon: '<svg>...</svg>'
 });
 ```
 
@@ -273,6 +449,41 @@ new VideoShorts('#container', videos, {
 });
 ```
 
+## Posição de Inserção
+
+### `insertPositionWrapper`
+
+- **Tipo:** `string`
+- **Padrão:** `'beforeend'`
+- **Descrição:** Posição para inserir o wrapper no container.
+
+| Valor | Descrição |
+|-------|-------------|
+| `'beforebegin'` | Antes do elemento em si |
+| `'afterbegin'` | Dentro do elemento, antes do primeiro filho |
+| `'beforeend'` | Dentro do elemento, após o último filho |
+| `'afterend'` | Após o elemento em si |
+
+```js
+new VideoShorts('#container', videos, {
+  insertPositionWrapper: 'beforeend'
+});
+```
+
+### `insertPositionItem`
+
+- **Tipo:** `string`
+- **Padrão:** `'beforeend'`
+- **Descrição:** Posição para inserir os itens de vídeo no wrapper.
+
+```js
+new VideoShorts('#container', videos, {
+  insertPositionItem: 'afterbegin'
+});
+```
+
+Use essas opções para controlar o posicionamento exato dos elementos de vídeo dentro da estrutura do seu slider/carousel.
+
 ## Callbacks
 
 ### `onReady`
@@ -299,6 +510,33 @@ new VideoShorts('#container', videos, {
     if (event.data === YT.PlayerState.PLAYING) {
       console.log(`Vídeo ${index} está reproduzindo`);
     }
+  }
+});
+```
+
+### `onPlay`
+
+- **Tipo:** `function`
+- **Descrição:** Chamado quando um vídeo começa a reproduzir.
+
+```js
+new VideoShorts('#container', videos, {
+  onPlay: (event, index, instance) => {
+    console.log(`Vídeo ${index} começou a reproduzir`);
+  }
+});
+```
+
+### `onEnd`
+
+- **Tipo:** `function`
+- **Descrição:** Chamado quando um vídeo termina.
+
+```js
+new VideoShorts('#container', videos, {
+  onEnd: (event, index, instance) => {
+    console.log(`Vídeo ${index} terminou`);
+    instance.play(index + 1); // reproduz próximo vídeo
   }
 });
 ```
