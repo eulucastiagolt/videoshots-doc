@@ -18,11 +18,11 @@ export default defineConfig({
           label: 'English',
           lang: 'en',
         },
-        'pt-BR': {
+        'pt-br': {
           label: 'Português (Brasil)',
           lang: 'pt-BR',
         },
-        'zh-CN': {
+        'zh-cn': {
           label: '中文',
           lang: 'zh-CN',
         },
