@@ -4,28 +4,120 @@ description: Uma biblioteca JavaScript leve para incorporar vídeos do YouTube c
 template: splash
 ---
 
-import { Card, CardGrid, LinkButton } from '@astrojs/starlight/components';
+import { Card, CardGrid, LinkButton, Tabs, TabItem } from '@astrojs/starlight/components';
 
 Uma biblioteca JavaScript leve e poderosa para incorporar vídeos do YouTube em suas aplicações web, com suporte nativo a lazy loading e uma API completa para controle de reprodução.
 
-<LinkButton href="/pt-br/doc" variant="primary">Documentação</LinkButton>
+<LinkButton href="/pt-br/doc" variant="primary">Começar</LinkButton>
+<LinkButton href="https://github.com/eulucastiagolt/videoshorts" variant="secondary">Ver no GitHub</LinkButton>
 
 ## Recursos
 
 <CardGrid stagger>
   <Card title="Carregamento Sob Demanda" icon="play">
-    Carrega vídeos sob demanda usando a API Intersection Observer para melhor desempenho.
+    Carrega vídeos apenas quando visíveis usando a API Intersection Observer para desempenho ideal.
   </Card>
   <Card title="API Completa" icon="settings">
-    Controle total sobre reprodução, volume, mudo e outros aspectos do vídeo.
+    Controle total sobre reprodução, volume, mudo, busca e todos os outros aspectos do vídeo.
   </Card>
   <Card title="Responsivo" icon="device">
     Suporte para proporções personalizadas para Shorts (9/16) e vídeos regulares (16/9).
   </Card>
   <Card title="Zero Dependências" icon="package">
-    Biblioteca independente, sem dependências externas.
+    Biblioteca independente sem dependências externas. Leve e rápida.
   </Card>
   <Card title="Compatível com Bibliotecas" icon="plug">
     Compatível com SwiperJS, Slick e outras bibliotecas de carousel/slider.
   </Card>
+  <Card title="Suporte a Thumbnail" icon="image">
+    Mostra thumbnails dos vídeos com transições suaves antes da reprodução começar.
+  </Card>
 </CardGrid>
+
+## Início Rápido
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.4/dist/videoshots.min.css">
+</head>
+<body>
+  <div id="videos" data-videoshort></div>
+
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.4/dist/videoshots.min.js"></script>
+  <script>
+    const player = new VideoShorts('#videos', [
+      'https://www.youtube.com/shorts/ZDqo7XROuwM',
+      'https://www.youtube.com/watch?v=SGfb6y1j5x0'
+    ], {
+      lazy: true,
+      muted: true,
+      loop: true
+    });
+
+    player.init();
+  </script>
+</body>
+</html>
+```
+
+## Instalação
+
+<Tabs>
+  <TabItem label="npm">
+    ```bash
+    npm install videoshots
+    ```
+  </TabItem>
+  <TabItem label="CDN">
+    ```html
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.4/dist/videoshots.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.4/dist/videoshots.min.js"></script>
+    ```
+  </TabItem>
+</Tabs>
+
+## Formatos de URL Suportados
+
+VideoShorts funciona com todos os formatos de URL do YouTube:
+
+| Formato | Exemplo |
+|---------|---------|
+| YouTube Watch | `https://www.youtube.com/watch?v=VIDEO_ID` |
+| YouTube Shorts | `https://www.youtube.com/shorts/VIDEO_ID` |
+| YouTube Embed | `https://www.youtube.com/embed/VIDEO_ID` |
+| youtu.be | `https://youtu.be/VIDEO_ID` |
+
+## Por que VideoShorts?
+
+<CardGrid>
+  <Card title="Desempenho" icon="rocket">
+    Carregamento lazy automático reduz o tempo de carregamento inicial e melhora os Core Web Vitals.
+  </Card>
+  <Card title="Flexibilidade" icon="puzzle">
+    Suporte para múltiplos formatos de URL do YouTube e opções completas de customização.
+  </Card>
+  <Card title="Controle Total" icon="gamepad">
+    API intuitiva para controlar todos os aspectos da reprodução com callbacks de eventos.
+  </Card>
+</CardGrid>
+
+## Suporte a Navegadores
+
+| Navegador | Versão |
+|-----------|--------|
+| Chrome | 51+ |
+| Firefox | 55+ |
+| Safari | 12.1+ |
+| Edge | 15+ |
+
+Requer a API `IntersectionObserver` para lazy loading.
+
+## Próximos Passos
+
+- [Instalação](/pt-br/doc/installation) - Guia de instalação detalhado
+- [Início Rápido](/pt-br/doc/quick-start) - Guia completo de uso
+- [Opções](/pt-br/doc/options) - Todas as opções de configuração
+- [Métodos da API](/pt-br/doc/api/methods) - Referência completa da API
+- [Exemplos](/pt-br/doc/examples/basic) - Exemplos práticos

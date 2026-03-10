@@ -1,0 +1,123 @@
+---
+title: VideoShorts
+description: A lightweight JavaScript library for embedding YouTube videos with lazy loading support.
+template: splash
+---
+
+import { Card, CardGrid, LinkButton, Tabs, TabItem } from '@astrojs/starlight/components';
+
+A lightweight and powerful JavaScript library for embedding YouTube videos in your web applications, with native lazy loading support and a complete API for playback control.
+
+<LinkButton href="/doc" variant="primary">Get Started</LinkButton>
+<LinkButton href="https://github.com/eulucastiagolt/videoshorts" variant="secondary">View on GitHub</LinkButton>
+
+## Features
+
+<CardGrid stagger>
+  <Card title="Lazy Loading" icon="play">
+    Loads videos only when visible using the Intersection Observer API for optimal performance.
+  </Card>
+  <Card title="Complete API" icon="settings">
+    Full control over playback, volume, mute, seek, and all other video aspects.
+  </Card>
+  <Card title="Responsive" icon="device">
+    Support for custom aspect ratios for Shorts (9/16) and regular videos (16/9).
+  </Card>
+  <Card title="Zero Dependencies" icon="package">
+    Standalone library with no external dependencies. Lightweight and fast.
+  </Card>
+  <Card title="Library Friendly" icon="plug">
+    Compatible with SwiperJS, Slick, and other carousel/slider libraries.
+  </Card>
+  <Card title="Thumbnail Support" icon="image">
+    Show video thumbnails with smooth transitions before playback starts.
+  </Card>
+</CardGrid>
+
+## Quick Start
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.4/dist/videoshots.min.css">
+</head>
+<body>
+  <div id="videos" data-videoshort></div>
+
+  <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.4/dist/videoshots.min.js"></script>
+  <script>
+    const player = new VideoShorts('#videos', [
+      'https://www.youtube.com/shorts/ZDqo7XROuwM',
+      'https://www.youtube.com/watch?v=SGfb6y1j5x0'
+    ], {
+      lazy: true,
+      muted: true,
+      loop: true
+    });
+
+    player.init();
+  </script>
+</body>
+</html>
+```
+
+## Installation
+
+<Tabs>
+  <TabItem label="npm">
+    ```bash
+    npm install videoshots
+    ```
+  </TabItem>
+  <TabItem label="CDN">
+    ```html
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.4/dist/videoshots.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/eulucastiagolt/videoshorts@1.6.4/dist/videoshots.min.js"></script>
+    ```
+  </TabItem>
+</Tabs>
+
+## Supported URL Formats
+
+VideoShorts works with all YouTube URL formats:
+
+| Format | Example |
+|--------|---------|
+| YouTube Watch | `https://www.youtube.com/watch?v=VIDEO_ID` |
+| YouTube Shorts | `https://www.youtube.com/shorts/VIDEO_ID` |
+| YouTube Embed | `https://www.youtube.com/embed/VIDEO_ID` |
+| youtu.be | `https://youtu.be/VIDEO_ID` |
+
+## Why VideoShorts?
+
+<CardGrid>
+  <Card title="Performance" icon="rocket">
+    Automatic lazy loading reduces initial page load time and improves Core Web Vitals.
+  </Card>
+  <Card title="Flexibility" icon="puzzle">
+    Support for multiple YouTube URL formats and complete customization options.
+  </Card>
+  <Card title="Full Control" icon="gamepad">
+    Intuitive API to control all aspects of playback with event callbacks.
+  </Card>
+</CardGrid>
+
+## Browser Support
+
+| Browser | Version |
+|---------|---------|
+| Chrome | 51+ |
+| Firefox | 55+ |
+| Safari | 12.1+ |
+| Edge | 15+ |
+
+Requires `IntersectionObserver` API for lazy loading.
+
+## Next Steps
+
+- [Installation](/doc/installation) - Detailed installation guide
+- [Quick Start](/doc/quick-start) - Complete usage guide
+- [Options](/doc/options) - All configuration options
+- [API Methods](/doc/api/methods) - Complete API reference
+- [Examples](/doc/examples/basic) - Practical examples
