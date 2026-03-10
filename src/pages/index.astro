@@ -1,3 +1,471 @@
 ---
-return Astro.redirect('/en');
+const translations = {
+  en: {
+    title: 'VideoShorts',
+    description: 'A lightweight JavaScript library for embedding YouTube videos with lazy loading support.',
+    intro: 'A lightweight and powerful JavaScript library for embedding YouTube videos in your web applications, with native lazy loading support and a complete API for playback control.',
+    documentation: 'Documentation',
+    features: 'Features',
+    lazyLoading: 'Lazy Loading',
+    lazyLoadingDesc: 'Loads videos on demand using the Intersection Observer API for better performance.',
+    completeApi: 'Complete API',
+    completeApiDesc: 'Full control over playback, volume, mute, and other video aspects.',
+    responsive: 'Responsive',
+    responsiveDesc: 'Support for custom aspect ratios for Shorts (9/16) and regular videos (16/9).',
+    zeroDeps: 'Zero Dependencies',
+    zeroDepsDesc: 'Standalone library with no external dependencies.',
+    libraryFriendly: 'Library Friendly',
+    libraryFriendlyDesc: 'Compatible with SwiperJS, Slick, and other carousel/slider libraries.',
+  },
+  'pt-br': {
+    title: 'VideoShorts',
+    description: 'Uma biblioteca JavaScript leve para incorporar vídeos do YouTube com suporte a lazy loading.',
+    intro: 'Uma biblioteca JavaScript leve e poderosa para incorporar vídeos do YouTube em suas aplicações web, com suporte nativo a lazy loading e uma API completa para controle de reprodução.',
+    documentation: 'Documentação',
+    features: 'Recursos',
+    lazyLoading: 'Carregamento Sob Demanda',
+    lazyLoadingDesc: 'Carrega vídeos sob demanda usando a API Intersection Observer para melhor desempenho.',
+    completeApi: 'API Completa',
+    completeApiDesc: 'Controle total sobre reprodução, volume, mudo e outros aspectos do vídeo.',
+    responsive: 'Responsivo',
+    responsiveDesc: 'Suporte para proporções personalizadas para Shorts (9/16) e vídeos regulares (16/9).',
+    zeroDeps: 'Zero Dependências',
+    zeroDepsDesc: 'Biblioteca independente, sem dependências externas.',
+    libraryFriendly: 'Compatível com Bibliotecas',
+    libraryFriendlyDesc: 'Compatível com SwiperJS, Slick e outras bibliotecas de carousel/slider.',
+  },
+  zh: {
+    title: 'VideoShorts',
+    description: '一个轻量级的 JavaScript 库，支持懒加载嵌入 YouTube 视频。',
+    intro: '一个轻量级且强大的 JavaScript 库，用于在您的 Web 应用程序中嵌入 YouTube 视频，具有原生懒加载支持和完整的播放控制 API。',
+    documentation: '文档',
+    features: '特性',
+    lazyLoading: '懒加载',
+    lazyLoadingDesc: '使用 Intersection Observer API 按需加载视频，以获得更好的性能。',
+    completeApi: '完整 API',
+    completeApiDesc: '完全控制播放、音量、静音和其他视频方面。',
+    responsive: '响应式',
+    responsiveDesc: '支持 Shorts (9/16) 和常规视频 (16/9) 的自定义纵横比。',
+    zeroDeps: '零依赖',
+    zeroDepsDesc: '独立的库，没有外部依赖。',
+    libraryFriendly: '库友好',
+    libraryFriendlyDesc: '兼容 SwiperJS、Slick 和其他轮播/滑块库。',
+  },
+};
+
+const locales = [
+  { code: 'en', label: 'English', path: '/en' },
+  { code: 'pt-br', label: 'Português (Brasil)', path: '/pt-br' },
+  { code: 'zh', label: '中文', path: '/zh' },
+];
 ---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VideoShorts - YouTube Video Embed Library</title>
+    <meta name="description" content="A lightweight JavaScript library for embedding YouTube videos with lazy loading support." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style>
+      :root {
+        --sl-color-white: #ffffff;
+        --sl-color-gray-1: #f8f9fa;
+        --sl-color-gray-2: #e9ecef;
+        --sl-color-gray-3: #dee2e6;
+        --sl-color-gray-4: #ced4da;
+        --sl-color-gray-5: #adb5bd;
+        --sl-color-gray-6: #868e96;
+        --sl-color-black: #0f0f0f;
+        --sl-color-bg: #0f0f0f;
+        --sl-color-bg-sidebar: #1a1a1a;
+        --sl-color-bg-nav: rgba(15, 15, 15, 0.8);
+        --sl-color-text: #f8f9fa;
+        --sl-color-text-muted: #adb5bd;
+        --sl-color-accent: #7c3aed;
+        --sl-color-accent-high: #a78bfa;
+        --sl-color-border: #27272a;
+        
+        --sl-font-system: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        --sl-font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+        
+        --sl-line-height: 1.6;
+        --sl-line-height-headings: 1.3;
+        
+        --sl-border-radius: 0.5rem;
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: var(--sl-font-system);
+        background: var(--sl-color-bg);
+        color: var(--sl-color-text);
+        min-height: 100vh;
+        line-height: var(--sl-line-height);
+      }
+      
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+      
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: var(--sl-color-bg-nav);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--sl-color-border);
+        z-index: 100;
+      }
+      
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
+      }
+      
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--sl-color-accent-high);
+        text-decoration: none;
+      }
+      
+      .nav-links {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+      }
+      
+      .nav-links a {
+        color: var(--sl-color-text-muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      
+      .nav-links a:hover {
+        color: var(--sl-color-text);
+      }
+      
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--sl-border-radius);
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s;
+        font-size: 0.875rem;
+      }
+      
+      .btn-primary {
+        background: var(--sl-color-accent);
+        color: var(--sl-color-white);
+      }
+      
+      .btn-primary:hover {
+        background: var(--sl-color-accent-high);
+      }
+      
+      main {
+        padding-top: 80px;
+      }
+      
+      .hero {
+        padding: 6rem 0 4rem;
+        text-align: center;
+      }
+      
+      .hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, var(--sl-color-accent-high) 0%, var(--sl-color-accent) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: var(--sl-line-height-headings);
+      }
+      
+      .hero p {
+        font-size: 1.25rem;
+        color: var(--sl-color-text-muted);
+        max-width: 700px;
+        margin: 0 auto 2rem;
+        line-height: 1.7;
+      }
+      
+      .features {
+        padding: 4rem 0;
+      }
+      
+      .features h2 {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 3rem;
+        font-weight: 700;
+      }
+      
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+      
+      .feature-card {
+        background: var(--sl-color-bg-sidebar);
+        border: 1px solid var(--sl-color-border);
+        border-radius: calc(var(--sl-border-radius) * 2);
+        padding: 2rem;
+        transition: border-color 0.2s, transform 0.2s;
+      }
+      
+      .feature-card:hover {
+        border-color: var(--sl-color-accent);
+        transform: translateY(-2px);
+      }
+      
+      .feature-icon {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, var(--sl-color-accent) 0%, var(--sl-color-accent-high) 100%);
+        border-radius: var(--sl-border-radius);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+      }
+      
+      .feature-card h3 {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      }
+      
+      .feature-card p {
+        color: var(--sl-color-text-muted);
+        font-size: 0.95rem;
+      }
+      
+      .language-selector {
+        position: relative;
+      }
+      
+      .language-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: var(--sl-color-bg-sidebar);
+        border: 1px solid var(--sl-color-border);
+        border-radius: var(--sl-border-radius);
+        color: var(--sl-color-text);
+        cursor: pointer;
+        font-size: 0.875rem;
+        transition: border-color 0.2s;
+      }
+      
+      .language-btn:hover {
+        border-color: var(--sl-color-accent);
+      }
+      
+      .language-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 0.5rem;
+        background: var(--sl-color-bg-sidebar);
+        border: 1px solid var(--sl-color-border);
+        border-radius: var(--sl-border-radius);
+        overflow: hidden;
+        display: none;
+        min-width: 180px;
+      }
+      
+      .language-menu.active {
+        display: block;
+      }
+      
+      .language-menu a {
+        display: block;
+        padding: 0.75rem 1rem;
+        color: var(--sl-color-text);
+        text-decoration: none;
+        white-space: nowrap;
+        transition: background 0.2s;
+      }
+      
+      .language-menu a:hover {
+        background: var(--sl-color-border);
+      }
+      
+      footer {
+        border-top: 1px solid var(--sl-color-border);
+        padding: 2rem 0;
+        text-align: center;
+        color: var(--sl-color-text-muted);
+        font-size: 0.875rem;
+      }
+      
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+        
+        .hero p {
+          font-size: 1rem;
+        }
+        
+        .nav-links .btn {
+          display: none;
+        }
+        
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav>
+          <a href="/" class="logo" id="logo">VideoShorts</a>
+          <div class="nav-links">
+            <div class="language-selector">
+              <button class="language-btn" id="langBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path fill-rule="evenodd" d="M8.516 3a.94.94 0 0 0-.941.94v1.15H2.94a.94.94 0 1 0 0 1.882h7.362a7.422 7.422 0 0 1-1.787 3.958 7.42 7.42 0 0 1-1.422-2.425.94.94 0 1 0-1.774.627 9.303 9.303 0 0 0 1.785 3.043 7.422 7.422 0 0 1-4.164 1.278.94.94 0 1 0 0 1.881 9.303 9.303 0 0 0 5.575-1.855 9.303 9.303 0 0 0 4.11 1.74l-.763 1.525a.968.968 0 0 0-.016.034l-1.385 2.77a.94.94 0 1 0 1.683.841l1.133-2.267h5.806l1.134 2.267a.94.94 0 0 0 1.683-.841l-1.385-2.769a.95.95 0 0 0-.018-.036l-3.476-6.951a.94.94 0 0 0-1.682 0l-1.82 3.639a7.423 7.423 0 0 1-3.593-1.256 9.303 9.303 0 0 0 2.27-5.203h1.894a.94.94 0 0 0 0-1.881H9.456V3.94A.94.94 0 0 0 8.516 3Zm6.426 11.794a1.068 1.068 0 0 1-.02.039l-.703 1.407h3.924l-1.962-3.924-1.24 2.478Z" clip-rule="evenodd"/>
+                </svg>
+                <span id="langLabel">English</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/>
+                </svg>
+              </button>
+              <div class="language-menu" id="langMenu">
+                {locales.map(locale => (
+                  <a href={locale.path} data-lang={locale.code}>{locale.label}</a>
+                ))}
+              </div>
+            </div>
+            <a href="https://github.com/eulucastiagolt/videoshorts" target="_blank" rel="noopener">GitHub</a>
+            <a href="/en/doc" class="btn btn-primary" id="docBtn">Documentation</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container">
+          <h1 id="heroTitle">VideoShorts</h1>
+          <p id="heroIntro">A lightweight and powerful JavaScript library for embedding YouTube videos in your web applications, with native lazy loading support and a complete API for playback control.</p>
+          <a href="/en/doc" class="btn btn-primary" id="heroDocBtn" style="font-size: 1rem; padding: 1rem 2rem;">Documentation</a>
+        </div>
+      </section>
+
+      <section class="features">
+        <div class="container">
+          <h2 id="featuresTitle">Features</h2>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon">⚡</div>
+              <h3 id="feature1Title">Lazy Loading</h3>
+              <p id="feature1Desc">Loads videos on demand using the Intersection Observer API for better performance.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🎮</div>
+              <h3 id="feature2Title">Complete API</h3>
+              <p id="feature2Desc">Full control over playback, volume, mute, and other video aspects.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">📱</div>
+              <h3 id="feature3Title">Responsive</h3>
+              <p id="feature3Desc">Support for custom aspect ratios for Shorts (9/16) and regular videos (16/9).</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">📦</div>
+              <h3 id="feature4Title">Zero Dependencies</h3>
+              <p id="feature4Desc">Standalone library with no external dependencies.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🔌</div>
+              <h3 id="feature5Title">Library Friendly</h3>
+              <p id="feature5Desc">Compatible with SwiperJS, Slick, and other carousel/slider libraries.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2024 VideoShorts. Released under the MIT License.</p>
+      </div>
+    </footer>
+
+    <script define:vars={{ translations, locales }}>
+      const userLang = navigator.language.toLowerCase();
+      const defaultLang = 'en';
+      
+      let currentLang = defaultLang;
+      
+      for (const locale of locales) {
+        if (userLang.startsWith(locale.code) || (locale.code === 'pt-br' && userLang.startsWith('pt'))) {
+          currentLang = locale.code;
+          break;
+        }
+      }
+      
+      const t = translations[currentLang] || translations[defaultLang];
+      
+      document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : (currentLang === 'pt-br' ? 'pt-BR' : 'en');
+      document.title = `${t.title} - YouTube Video Embed Library`;
+      document.querySelector('meta[name="description"]').content = t.description;
+      
+      document.getElementById('heroTitle').textContent = t.title;
+      document.getElementById('heroIntro').textContent = t.intro;
+      document.getElementById('docBtn').textContent = t.documentation;
+      document.getElementById('heroDocBtn').textContent = t.documentation;
+      document.getElementById('featuresTitle').textContent = t.features;
+      document.getElementById('feature1Title').textContent = t.lazyLoading;
+      document.getElementById('feature1Desc').textContent = t.lazyLoadingDesc;
+      document.getElementById('feature2Title').textContent = t.completeApi;
+      document.getElementById('feature2Desc').textContent = t.completeApiDesc;
+      document.getElementById('feature3Title').textContent = t.responsive;
+      document.getElementById('feature3Desc').textContent = t.responsiveDesc;
+      document.getElementById('feature4Title').textContent = t.zeroDeps;
+      document.getElementById('feature4Desc').textContent = t.zeroDepsDesc;
+      document.getElementById('feature5Title').textContent = t.libraryFriendly;
+      document.getElementById('feature5Desc').textContent = t.libraryFriendlyDesc;
+      document.getElementById('langLabel').textContent = locales.find(l => l.code === currentLang)?.label || 'English';
+      
+      const docPath = '/' + currentLang + '/doc';
+      document.getElementById('docBtn').href = docPath;
+      document.getElementById('heroDocBtn').href = docPath;
+      
+      document.getElementById('langBtn').addEventListener('click', () => {
+        document.getElementById('langMenu').classList.toggle('active');
+      });
+      
+      document.addEventListener('click', (e) => {
+        const target = e.target;
+        if (!target?.closest('.language-selector')) {
+          document.getElementById('langMenu')?.classList.remove('active');
+        }
+      });
+    </script>
+  </body>
+</html>

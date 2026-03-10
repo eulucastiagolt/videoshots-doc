@@ -62,6 +62,41 @@ new VideoShorts('#container', videos, {
 });
 ```
 
+## onPlay
+
+Called when a video starts playing.
+
+- **Parameters:**
+  - `event`: YouTube Player API event
+  - `index`: Video index
+  - `instance`: VideoShorts instance
+
+```js
+new VideoShorts('#container', videos, {
+  onPlay: (event, index, instance) => {
+    console.log(`Video ${index} started playing`);
+  }
+});
+```
+
+## onEnd
+
+Called when a video ends.
+
+- **Parameters:**
+  - `event`: YouTube Player API event
+  - `index`: Video index
+  - `instance`: VideoShorts instance
+
+```js
+new VideoShorts('#container', videos, {
+  onEnd: (event, index, instance) => {
+    console.log(`Video ${index} ended`);
+    instance.play(index + 1); // play next video
+  }
+});
+```
+
 ## onError
 
 Called when a player error occurs.

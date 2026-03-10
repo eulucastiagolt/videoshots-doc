@@ -9,22 +9,48 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 ```js
 const DEFAULT_OPTIONS = {
+  // CSS Classes
   containerClass: 'videoshort-container',
   wrapperClass: 'videoshort-wrapper',
   itemClass: 'videoshort-item',
   skeletonClass: 'videoshort-skeleton',
+  overlayClass: 'videoshort-overlay',
+  playButtonClass: 'videoshort-play-button',
+  muteButtonClass: 'videoshort-mute-button',
+
+  // Button Icons
+  playButtonIcon: '▶',
+  pauseButtonIcon: '⏸',
+  muteButtonIcon: '🔇',
+  unmuteButtonIcon: '🔊',
+
+  // Thumbnail
+  showThumbnail: true,
+  thumbnailClass: 'videoshort-thumbnail',
+  thumbnailTransitionDuration: '0.3s',
+  showThumbnailOnPause: false,
+
+  // Lazy Loading
   lazy: true,
   lazyThreshold: 0.1,
   lazyRootMargin: '200px',
+
+  // Dimensions
   width: '360px',
   height: null,
   aspectRatio: '9/16',
+
+  // YouTube Player
   autoplay: false,
   muted: false,
   loop: false,
   controls: 1,
   rel: 0,
-  modestbranding: 1
+  modestbranding: 1,
+
+  // Insert Position
+  insertPositionWrapper: 'beforeend',
+  insertPositionItem: 'beforeend'
 };
 ```
 
@@ -75,6 +101,144 @@ new VideoShorts('#container', videos, {
 ```js
 new VideoShorts('#container', videos, {
   skeletonClass: 'my-skeleton'
+});
+```
+
+### `overlayClass`
+
+- **Type:** `string`
+- **Default:** `'videoshort-overlay'`
+- **Description:** CSS class applied to the overlay element.
+
+```js
+new VideoShorts('#container', videos, {
+  overlayClass: 'my-overlay'
+});
+```
+
+### `playButtonClass`
+
+- **Type:** `string`
+- **Default:** `'videoshort-play-button'`
+- **Description:** CSS class applied to the play/pause button.
+
+```js
+new VideoShorts('#container', videos, {
+  playButtonClass: 'my-play-btn'
+});
+```
+
+### `muteButtonClass`
+
+- **Type:** `string`
+- **Default:** `'videoshort-mute-button'`
+- **Description:** CSS class applied to the mute/unmute button.
+
+```js
+new VideoShorts('#container', videos, {
+  muteButtonClass: 'my-mute-btn'
+});
+```
+
+## UI Controls
+
+### `playButtonIcon`
+
+- **Type:** `string`
+- **Default:** `'▶'`
+- **Description:** Icon for the play button. Can be text or SVG.
+
+```js
+new VideoShorts('#container', videos, {
+  playButtonIcon: '▶',
+  // or use SVG
+  playButtonIcon: '<svg>...</svg>'
+});
+```
+
+### `pauseButtonIcon`
+
+- **Type:** `string`
+- **Default:** `'⏸'`
+- **Description:** Icon for the pause button.
+
+```js
+new VideoShorts('#container', videos, {
+  pauseButtonIcon: '⏸'
+});
+```
+
+### `muteButtonIcon`
+
+- **Type:** `string`
+- **Default:** `'🔇'`
+- **Description:** Icon for the muted state.
+
+```js
+new VideoShorts('#container', videos, {
+  muteButtonIcon: '🔇'
+});
+```
+
+### `unmuteButtonIcon`
+
+- **Type:** `string`
+- **Default:** `'🔊'`
+- **Description:** Icon for the unmuted state.
+
+```js
+new VideoShorts('#container', videos, {
+  unmuteButtonIcon: '🔊'
+});
+```
+
+## Thumbnail
+
+### `showThumbnail`
+
+- **Type:** `boolean`
+- **Default:** `true`
+- **Description:** Shows video thumbnail over the player before playback.
+
+```js
+new VideoShorts('#container', videos, {
+  showThumbnail: true
+});
+```
+
+### `thumbnailClass`
+
+- **Type:** `string`
+- **Default:** `'videoshort-thumbnail'`
+- **Description:** CSS class applied to the thumbnail element.
+
+```js
+new VideoShorts('#container', videos, {
+  thumbnailClass: 'my-thumbnail'
+});
+```
+
+### `thumbnailTransitionDuration`
+
+- **Type:** `string`
+- **Default:** `'0.3s'`
+- **Description:** Duration of the thumbnail fade transition.
+
+```js
+new VideoShorts('#container', videos, {
+  thumbnailTransitionDuration: '0.5s'
+});
+```
+
+### `showThumbnailOnPause`
+
+- **Type:** `boolean`
+- **Default:** `false`
+- **Description:** Shows thumbnail when video is paused.
+
+```js
+new VideoShorts('#container', videos, {
+  showThumbnailOnPause: true
 });
 ```
 
@@ -273,6 +437,41 @@ new VideoShorts('#container', videos, {
 });
 ```
 
+## Insert Position
+
+### `insertPositionWrapper`
+
+- **Type:** `string`
+- **Default:** `'beforeend'`
+- **Description:** Position to insert wrapper element in container.
+
+| Value | Description |
+|-------|-------------|
+| `'beforebegin'` | Before the element itself |
+| `'afterbegin'` | Just inside the element, before its first child |
+| `'beforeend'` | Just inside the element, after its last child |
+| `'afterend'` | After the element itself |
+
+```js
+new VideoShorts('#container', videos, {
+  insertPositionWrapper: 'beforeend'
+});
+```
+
+### `insertPositionItem`
+
+- **Type:** `string`
+- **Default:** `'beforeend'`
+- **Description:** Position to insert video items in wrapper.
+
+```js
+new VideoShorts('#container', videos, {
+  insertPositionItem: 'afterbegin'
+});
+```
+
+Use these options to control the exact placement of video elements within your slider/carousel structure.
+
 ## Callbacks
 
 ### `onReady`
@@ -299,6 +498,33 @@ new VideoShorts('#container', videos, {
     if (event.data === YT.PlayerState.PLAYING) {
       console.log(`Video ${index} is playing`);
     }
+  }
+});
+```
+
+### `onPlay`
+
+- **Type:** `function`
+- **Description:** Called when a video starts playing.
+
+```js
+new VideoShorts('#container', videos, {
+  onPlay: (event, index, instance) => {
+    console.log(`Video ${index} started playing`);
+  }
+});
+```
+
+### `onEnd`
+
+- **Type:** `function`
+- **Description:** Called when a video ends.
+
+```js
+new VideoShorts('#container', videos, {
+  onEnd: (event, index, instance) => {
+    console.log(`Video ${index} ended`);
+    instance.play(index + 1); // play next video
   }
 });
 ```
